@@ -1,0 +1,12 @@
+Package: PANPRS
+Type: Package
+Title: Building polygenic risk prediction models based on summary
+        statistics of genome-wide association studies
+Version: 1.0
+Date: 2023-06-01
+Author: Katherine Luo
+Maintainer: Katherine Luo
+Depends: R, gtools, permutations
+Description: Shrinkage estimator for polygenic risk prediction models based on summary statistics of genome-wide association studies.
+License: GPL version 2 or later
+NeedsCompilation: yes
