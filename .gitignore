@@ -1,16 +1,3 @@
-# DS_Store files
-*.DS_Store
-
-# .ini files
-*.ini
-
-# Old code folder
-OLD
-
-# Object files
-*.o
-*.so
-
 # History files
 .Rhistory
 .Rapp.history

@@ -10,7 +10,7 @@
     The variables are as
   follows: 
 
-\itemize{
+ \itemize{
    \item CHR_A: The chromosome of SNP_A 
    \item BP_A: The positions of SNP_A  
    \item SNP_A: The names of SNP_A 
@@ -22,10 +22,10 @@
 \usage{data(plinkLD)}
 \format{A data frame with 205959 rows and 7 columns}
 \references{
-\itemize{
+  \itemize{
     \item Purcell S, et al. (2007) 
         PLINK: a toolset for whole-genome association and population-based 
 	linkage analysis. \emph{American Journal of Human Genetics}, \strong{81}.
-}
+  }
 }
 \keyword{datasets}

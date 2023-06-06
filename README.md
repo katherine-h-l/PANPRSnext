@@ -1,5 +1,8 @@
 # PANPRS
 
+
+
+
 ### Input for PANPRS incorporating multiple traits and functional annotations of SNPs.
 
 summaryZ, 
@@ -38,3 +41,13 @@ Modify the parameters in the gsfPEN.R, and execute it.
 
 ## Example
 Please find it in the R package.
+
+
+## Future extensions
+
+
+
+## Contact
+* Lei Song, lei.song@nih.gov
+* Ting-huei Chen, ting-huei.chen@mat.ulaval.ca
+
