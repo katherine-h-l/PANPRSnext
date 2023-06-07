@@ -1,0 +1,1 @@
+Rcpp::compileAttributes('~/Desktop/Rcpp_examples/Pkg/')
