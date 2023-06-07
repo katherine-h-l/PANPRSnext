@@ -15,67 +15,64 @@
 #include <time.h>
 #include <R.h>
 #include <Rmath.h>
-#include <omp.h>
+
 #include "utility.hpp"
 #include "gsfPEN.hpp"
-#include <boost/multi_array.hpp>
-#include <boost/numeric/ublas/matrix_sparse.hpp>
 
 /*********************************************************************
  *
  *  gsfFunc function
  *
  *********************************************************************/
-extern "C" {
-    void gsfFunc(double *RsummaryBetas, int *ldJ, int *dims, int *Numitervec,
-                int *RIndexMatrix, int *IndJ,
-                double *ldvec, int *ChrIndexBeta, double *RupperVal,
-                double *Init_summaryBetas, double *RSDvec,
-                double *RtuningMatrix, double *RBetaMatrix, char **penalty_,
-                double *lambda0vec, double *RZmatrix, int *dims2,
-                double *RAllTuningMatrix, double *lambdavec, int *RfuncLambda,
-                int *IfuncSNP)
-    {
-        // This works :)
-        // #pragma omp parallel
-        // {
-        //     int thread_id = omp_get_thread_num();
-        //     int num_threads = omp_get_num_threads();
-        //     printf("Hello from thread %d of %d\n", thread_id, num_threads);
-        // }
+void gsfFunc(double *RsummaryBetas, int *ldJ, int *dims, int *Numitervec,
+            int *RIndexMatrix, int *IndJ,
+            double *ldvec, int *ChrIndexBeta, double *RupperVal,
+            double *Init_summaryBetas, double *RSDvec,
+            double *RtuningMatrix, double *RBetaMatrix, char **penalty_,
+            double *lambda0vec, double *RZmatrix, int *dims2,
+            double *RAllTuningMatrix, double *lambdavec, int *RfuncLambda,
+            int *IfuncSNP)
+{
+    // This works :)
+    // #pragma omp parallel
+    // {
+    //     int thread_id = omp_get_thread_num();
+    //     int num_threads = omp_get_num_threads();
+    //     printf("Hello from thread %d of %d\n", thread_id, num_threads);
+    // }
 
-        int P = dims[0];
-        int nrow_IndexMatrix = dims[3], ncol_IndexMatrix = dims[4];
-        int **IndexMatrix, nrow_tuningMatrix = dims[8];
-        int ncol_tuningMatrix = dims[9], Q = dims[10], ncolBetaMatrix = dims[11];
-        int NumTuning = dims2[0], nrow_funcLambda = dims2[1];
-        int ncol_funcLambda = dims2[2], nrow_Zmatrix = dims2[3], ncol_Zmatrix = dims2[4];
-        int nrow_AllTuningMatrix = dims2[6], ncol_AllTuningMatrix = dims2[7];
+    int P = dims[0];
+    int nrow_IndexMatrix = dims[3], ncol_IndexMatrix = dims[4];
+    int **IndexMatrix, nrow_tuningMatrix = dims[8];
+    int ncol_tuningMatrix = dims[9], Q = dims[10], ncolBetaMatrix = dims[11];
+    int NumTuning = dims2[0], nrow_funcLambda = dims2[1];
+    int ncol_funcLambda = dims2[2], nrow_Zmatrix = dims2[3], ncol_Zmatrix = dims2[4];
+    int nrow_AllTuningMatrix = dims2[6], ncol_AllTuningMatrix = dims2[7];
 
-        double **BetaMatrix, **tuningMatrix, **summaryBetas, **SDvec;
+    double **BetaMatrix, **tuningMatrix, **summaryBetas, **SDvec;
 
-        /* reorganize vector into matrix */
-        reorg(RsummaryBetas, &summaryBetas, P, Q);
-        reorg(RSDvec, &SDvec, P, Q);
-        reorg(RBetaMatrix, &BetaMatrix, NumTuning, ncolBetaMatrix);
+    /* reorganize vector into matrix */
+    reorg(RsummaryBetas, &summaryBetas, P, Q);
+    reorg(RSDvec, &SDvec, P, Q);
+    reorg(RBetaMatrix, &BetaMatrix, NumTuning, ncolBetaMatrix);
 
-        reorg(RtuningMatrix, &tuningMatrix, nrow_tuningMatrix, ncol_tuningMatrix);
-        reorg_int(RIndexMatrix, &IndexMatrix, nrow_IndexMatrix, ncol_IndexMatrix);
+    reorg(RtuningMatrix, &tuningMatrix, nrow_tuningMatrix, ncol_tuningMatrix);
+    reorg_int(RIndexMatrix, &IndexMatrix, nrow_IndexMatrix, ncol_IndexMatrix);
 
-        double **Zmatrix, **AllTuningMatrix;
-        int **funcLambda;
+    double **Zmatrix, **AllTuningMatrix;
+    int **funcLambda;
 
-        /* reorganize vector into matrix */
-        reorg(RAllTuningMatrix, &AllTuningMatrix, nrow_AllTuningMatrix, ncol_AllTuningMatrix);
-        reorg(RZmatrix, &Zmatrix, nrow_Zmatrix, ncol_Zmatrix);
-        reorg_int(RfuncLambda, &funcLambda, nrow_funcLambda, ncol_funcLambda);
+    /* reorganize vector into matrix */
+    reorg(RAllTuningMatrix, &AllTuningMatrix, nrow_AllTuningMatrix, ncol_AllTuningMatrix);
+    reorg(RZmatrix, &Zmatrix, nrow_Zmatrix, ncol_Zmatrix);
+    reorg_int(RfuncLambda, &funcLambda, nrow_funcLambda, ncol_funcLambda);
 
-        gsfFuncC(summaryBetas, ldJ, dims, Numitervec, IndexMatrix, IndJ,
-                ldvec, ChrIndexBeta, RupperVal, Init_summaryBetas, SDvec,
-                tuningMatrix, BetaMatrix, penalty_, lambda0vec, Zmatrix, dims2, AllTuningMatrix,
-                lambdavec, funcLambda, IfuncSNP);
-    }
+    gsfFuncC(summaryBetas, ldJ, dims, Numitervec, IndexMatrix, IndJ,
+            ldvec, ChrIndexBeta, RupperVal, Init_summaryBetas, SDvec,
+            tuningMatrix, BetaMatrix, penalty_, lambda0vec, Zmatrix, dims2, AllTuningMatrix,
+            lambdavec, funcLambda, IfuncSNP);
 }
+
 
 void gsfFuncC(double **summaryBetas, int *ldJ, int *dims, int *Numitervec,
               int **IndexMatrix, int *IndJ,
