@@ -10,6 +10,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
+Depends: gtools, permutations
 LinkingTo: 
     Rcpp,
     RcppArmadillo

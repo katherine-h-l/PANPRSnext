@@ -22,21 +22,38 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// getEigenValues
-arma::vec getEigenValues(arma::mat M);
-RcppExport SEXP _PANPRSnext_getEigenValues(SEXP MSEXP) {
+// gsfPEN_cpp
+Rcpp::List gsfPEN_cpp(arma::mat summary_betas, arma::vec ld_J, arma::vec num_iter_vec, arma::mat index_matrix, arma::vec index_J, arma::vec ld_vec, arma::vec upper_val, arma::mat SD_vec, arma::mat tuning_matrix, arma::mat beta_matrix, arma::vec lambda0_vec, arma::mat z_matrix, arma::mat all_tuning_matrix, arma::vec lambda_vec_func, arma::mat func_lambda, arma::vec Ifunc_SNP, arma::vec dims, arma::vec params);
+RcppExport SEXP _PANPRSnext_gsfPEN_cpp(SEXP summary_betasSEXP, SEXP ld_JSEXP, SEXP num_iter_vecSEXP, SEXP index_matrixSEXP, SEXP index_JSEXP, SEXP ld_vecSEXP, SEXP upper_valSEXP, SEXP SD_vecSEXP, SEXP tuning_matrixSEXP, SEXP beta_matrixSEXP, SEXP lambda0_vecSEXP, SEXP z_matrixSEXP, SEXP all_tuning_matrixSEXP, SEXP lambda_vec_funcSEXP, SEXP func_lambdaSEXP, SEXP Ifunc_SNPSEXP, SEXP dimsSEXP, SEXP paramsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type M(MSEXP);
-    rcpp_result_gen = Rcpp::wrap(getEigenValues(M));
+    Rcpp::traits::input_parameter< arma::mat >::type summary_betas(summary_betasSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type ld_J(ld_JSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type num_iter_vec(num_iter_vecSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type index_matrix(index_matrixSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type index_J(index_JSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type ld_vec(ld_vecSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type upper_val(upper_valSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type SD_vec(SD_vecSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type tuning_matrix(tuning_matrixSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type beta_matrix(beta_matrixSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type lambda0_vec(lambda0_vecSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type z_matrix(z_matrixSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type all_tuning_matrix(all_tuning_matrixSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type lambda_vec_func(lambda_vec_funcSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type func_lambda(func_lambdaSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Ifunc_SNP(Ifunc_SNPSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type dims(dimsSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type params(paramsSEXP);
+    rcpp_result_gen = Rcpp::wrap(gsfPEN_cpp(summary_betas, ld_J, num_iter_vec, index_matrix, index_J, ld_vec, upper_val, SD_vec, tuning_matrix, beta_matrix, lambda0_vec, z_matrix, all_tuning_matrix, lambda_vec_func, func_lambda, Ifunc_SNP, dims, params));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_PANPRSnext_test_me", (DL_FUNC) &_PANPRSnext_test_me, 1},
-    {"_PANPRSnext_getEigenValues", (DL_FUNC) &_PANPRSnext_getEigenValues, 1},
+    {"_PANPRSnext_gsfPEN_cpp", (DL_FUNC) &_PANPRSnext_gsfPEN_cpp, 18},
     {NULL, NULL, 0}
 };
 

@@ -7,9 +7,7 @@ test_me <- function(i) {
     .Call(`_PANPRSnext_test_me`, i)
 }
 
-#' Gets eigen values
-#' @param M Matrix to get eigen values for
-getEigenValues <- function(M) {
-    .Call(`_PANPRSnext_getEigenValues`, M)
+gsfPEN_cpp <- function(summary_betas, ld_J, num_iter_vec, index_matrix, index_J, ld_vec, upper_val, SD_vec, tuning_matrix, beta_matrix, lambda0_vec, z_matrix, all_tuning_matrix, lambda_vec_func, func_lambda, Ifunc_SNP, dims, params) {
+    .Call(`_PANPRSnext_gsfPEN_cpp`, summary_betas, ld_J, num_iter_vec, index_matrix, index_J, ld_vec, upper_val, SD_vec, tuning_matrix, beta_matrix, lambda0_vec, z_matrix, all_tuning_matrix, lambda_vec_func, func_lambda, Ifunc_SNP, dims, params)
 }
 
