@@ -8,31 +8,19 @@
 Rcpp::List gsfPEN_cpp(
   arma::Mat<double> summary_betas,
   arma::Col<int> ld_J,
-  arma::Col<int> num_iter_vec, // Don't need to take this as parameter
   arma::Mat<int> index_matrix,
   arma::Col<int> index_J,
   arma::Col<double> ld_vec,
-  double upper_val,
   arma::Mat<double> SD_vec,
   arma::Mat<double> tuning_matrix,
-  arma::Mat<double> beta_matrix,
   arma::Col<double> lambda0_vec,
   arma::Mat<double> z_matrix,
-  arma::Mat<double> all_tuning_matrix,
   arma::Col<double> lambda_vec_func,
   arma::Mat<int> func_lambda,
   arma::Col<int> Ifunc_SNP,
   arma::Col<int> dims,
-  arma::Col<int> params
+  arma::Col<double> params
 ) {
-  arma::mat Matrix1;
-  arma::vec Vector1;
-  arma::mat Matrix2;
-
-  dims(0) = 99;
-
-  dims.raw_print();
-
   int P = dims(0); // Number of SNPs
   int Q = dims(1);
 
@@ -54,20 +42,24 @@ Rcpp::List gsfPEN_cpp(
   int nrow_beta_matrix = dims(12);
   int ncol_beta_matrix = dims(13);
 
-  int num_iter = params(0);
-  int breaking = params(1);
-  int z_scale = params(2);
-  int df_max = params(3);
-  int leng_p_threshold = params(4);
-  int num_indices = params(5);
+  double upper_val = params(0);
+  int num_iter = params(1);
+  int breaking = params(2);
+  int z_scale = params(3);
+  int df_max = params(4);
+  int leng_p_threshold = params(5);
+  int num_indices = params(6);
 
   double epsilon = 0.0001;
 
   int s_tuning = 0;
 
+  arma::Col<int> num_iter_vec(nrow_all_tuning_matrix, arma::fill::zeros);
   arma::Col<double> temp_lambda_vec(ncol_func_lambda, arma::fill::zeros);
   arma::Col<double> sum_betas(P, arma::fill::zeros);
   
+  arma::Mat<double> all_tuning_matrix(nrow_all_tuning_matrix, ncol_all_tuning_matrix, arma::fill::zeros);
+  arma::Mat<double> beta_matrix(nrow_beta_matrix, ncol_beta_matrix, arma::fill::zeros);
   arma::Mat<double> joint_b_matrix(P, Q, arma::fill::zeros);
   arma::Mat<double> temp_b_matrix(P, Q, arma::fill::zeros);
   arma::Mat<int> skip_b(P, Q, arma::fill::zeros);
@@ -83,8 +75,6 @@ Rcpp::List gsfPEN_cpp(
       for (int tun_idx_2 = 0; tun_idx_2 < nrow_tuning_matrix; tun_idx_2++)
       {
         int tuning_index = tun_idx_1 * nrow_tuning_matrix + tun_idx_2;
-
-        num_iter_vec(tuning_index) = 0;
 
         for (int func_index = 0; func_index < ncol_func_lambda; func_index++)
         {
@@ -302,9 +292,11 @@ Rcpp::List gsfPEN_cpp(
   }
   PutRNGstate();
 
+  num_iter_vec.print();
+
   return Rcpp::List::create(
-    Rcpp::Named("beta_matrix") = Matrix1,
-    Rcpp::Named("iterations") = Vector1,
-    Rcpp::Named("all_tuning_matrix") = Matrix2
+    Rcpp::Named("beta_matrix") = beta_matrix,
+    Rcpp::Named("iterations") = num_iter_vec,
+    Rcpp::Named("all_tuning_matrix") = all_tuning_matrix
   );
 }

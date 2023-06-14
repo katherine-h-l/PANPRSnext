@@ -12,36 +12,32 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // gsfPEN_cpp
-Rcpp::List gsfPEN_cpp(arma::Mat<double> summary_betas, arma::Col<int> ld_J, arma::Col<int> num_iter_vec, arma::Mat<int> index_matrix, arma::Col<int> index_J, arma::Col<double> ld_vec, double upper_val, arma::Mat<double> SD_vec, arma::Mat<double> tuning_matrix, arma::Mat<double> beta_matrix, arma::Col<double> lambda0_vec, arma::Mat<double> z_matrix, arma::Mat<double> all_tuning_matrix, arma::Col<double> lambda_vec_func, arma::Mat<int> func_lambda, arma::Col<int> Ifunc_SNP, arma::Col<int> dims, arma::Col<int> params);
-RcppExport SEXP _PANPRSnext_gsfPEN_cpp(SEXP summary_betasSEXP, SEXP ld_JSEXP, SEXP num_iter_vecSEXP, SEXP index_matrixSEXP, SEXP index_JSEXP, SEXP ld_vecSEXP, SEXP upper_valSEXP, SEXP SD_vecSEXP, SEXP tuning_matrixSEXP, SEXP beta_matrixSEXP, SEXP lambda0_vecSEXP, SEXP z_matrixSEXP, SEXP all_tuning_matrixSEXP, SEXP lambda_vec_funcSEXP, SEXP func_lambdaSEXP, SEXP Ifunc_SNPSEXP, SEXP dimsSEXP, SEXP paramsSEXP) {
+Rcpp::List gsfPEN_cpp(arma::Mat<double> summary_betas, arma::Col<int> ld_J, arma::Mat<int> index_matrix, arma::Col<int> index_J, arma::Col<double> ld_vec, arma::Mat<double> SD_vec, arma::Mat<double> tuning_matrix, arma::Col<double> lambda0_vec, arma::Mat<double> z_matrix, arma::Col<double> lambda_vec_func, arma::Mat<int> func_lambda, arma::Col<int> Ifunc_SNP, arma::Col<int> dims, arma::Col<double> params);
+RcppExport SEXP _PANPRSnext_gsfPEN_cpp(SEXP summary_betasSEXP, SEXP ld_JSEXP, SEXP index_matrixSEXP, SEXP index_JSEXP, SEXP ld_vecSEXP, SEXP SD_vecSEXP, SEXP tuning_matrixSEXP, SEXP lambda0_vecSEXP, SEXP z_matrixSEXP, SEXP lambda_vec_funcSEXP, SEXP func_lambdaSEXP, SEXP Ifunc_SNPSEXP, SEXP dimsSEXP, SEXP paramsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::Mat<double> >::type summary_betas(summary_betasSEXP);
     Rcpp::traits::input_parameter< arma::Col<int> >::type ld_J(ld_JSEXP);
-    Rcpp::traits::input_parameter< arma::Col<int> >::type num_iter_vec(num_iter_vecSEXP);
     Rcpp::traits::input_parameter< arma::Mat<int> >::type index_matrix(index_matrixSEXP);
     Rcpp::traits::input_parameter< arma::Col<int> >::type index_J(index_JSEXP);
     Rcpp::traits::input_parameter< arma::Col<double> >::type ld_vec(ld_vecSEXP);
-    Rcpp::traits::input_parameter< double >::type upper_val(upper_valSEXP);
     Rcpp::traits::input_parameter< arma::Mat<double> >::type SD_vec(SD_vecSEXP);
     Rcpp::traits::input_parameter< arma::Mat<double> >::type tuning_matrix(tuning_matrixSEXP);
-    Rcpp::traits::input_parameter< arma::Mat<double> >::type beta_matrix(beta_matrixSEXP);
     Rcpp::traits::input_parameter< arma::Col<double> >::type lambda0_vec(lambda0_vecSEXP);
     Rcpp::traits::input_parameter< arma::Mat<double> >::type z_matrix(z_matrixSEXP);
-    Rcpp::traits::input_parameter< arma::Mat<double> >::type all_tuning_matrix(all_tuning_matrixSEXP);
     Rcpp::traits::input_parameter< arma::Col<double> >::type lambda_vec_func(lambda_vec_funcSEXP);
     Rcpp::traits::input_parameter< arma::Mat<int> >::type func_lambda(func_lambdaSEXP);
     Rcpp::traits::input_parameter< arma::Col<int> >::type Ifunc_SNP(Ifunc_SNPSEXP);
     Rcpp::traits::input_parameter< arma::Col<int> >::type dims(dimsSEXP);
-    Rcpp::traits::input_parameter< arma::Col<int> >::type params(paramsSEXP);
-    rcpp_result_gen = Rcpp::wrap(gsfPEN_cpp(summary_betas, ld_J, num_iter_vec, index_matrix, index_J, ld_vec, upper_val, SD_vec, tuning_matrix, beta_matrix, lambda0_vec, z_matrix, all_tuning_matrix, lambda_vec_func, func_lambda, Ifunc_SNP, dims, params));
+    Rcpp::traits::input_parameter< arma::Col<double> >::type params(paramsSEXP);
+    rcpp_result_gen = Rcpp::wrap(gsfPEN_cpp(summary_betas, ld_J, index_matrix, index_J, ld_vec, SD_vec, tuning_matrix, lambda0_vec, z_matrix, lambda_vec_func, func_lambda, Ifunc_SNP, dims, params));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_PANPRSnext_gsfPEN_cpp", (DL_FUNC) &_PANPRSnext_gsfPEN_cpp, 18},
+    {"_PANPRSnext_gsfPEN_cpp", (DL_FUNC) &_PANPRSnext_gsfPEN_cpp, 14},
     {NULL, NULL, 0}
 };
 

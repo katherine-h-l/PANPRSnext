@@ -2,25 +2,21 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' Main CPP function
-#' @param summary_betas matrix
-#' @param ld_J vector
-#' @param num_iter_vec vector
-#' @param index_matrix matrix
-#' @param index_J vector
-#' @param ld_vec vector
-#' @param upper_val double
-#' @param SD_vec matrix
-#' @param tuning_matrix matrix
-#' @param beta_matrix matrix
-#' @param lambda0_vec vector
-#' @param z_matrix matrix
-#' @param all_tuning_matrix matrix
-#' @param lambda_vec_func vector
-#' @param func_lambda matrix
-#' @param Ifunc_SNP vector
-#' @param dims vector
-#' @param params vector
-gsfPEN_cpp <- function(summary_betas, ld_J, num_iter_vec, index_matrix, index_J, ld_vec, upper_val, SD_vec, tuning_matrix, beta_matrix, lambda0_vec, z_matrix, all_tuning_matrix, lambda_vec_func, func_lambda, Ifunc_SNP, dims, params) {
-    .Call(`_PANPRSnext_gsfPEN_cpp`, summary_betas, ld_J, num_iter_vec, index_matrix, index_J, ld_vec, upper_val, SD_vec, tuning_matrix, beta_matrix, lambda0_vec, z_matrix, all_tuning_matrix, lambda_vec_func, func_lambda, Ifunc_SNP, dims, params)
+#' @param summary_betas matrix of summary statistics
+#' @param ld_J vector of indices of SNPs in LD with the current SNP
+#' @param index_matrix matrix of indices of SNPs in LD with the current SNP
+#' @param index_J vector of indices of SNPs in LD with the current SNP
+#' @param ld_vec vector of LD values
+#' @param SD_vec matrix of SD values
+#' @param tuning_matrix matrix of tuning parameters
+#' @param lambda0_vec vector of lambda0 values
+#' @param z_matrix matrix of z values
+#' @param lambda_vec_func vector of lambda values
+#' @param func_lambda matrix of lambda values
+#' @param Ifunc_SNP vector of indices of SNPs in LD with the current SNP
+#' @param dims vector of dimensions
+#' @param params vector of parameters
+gsfPEN_cpp <- function(summary_betas, ld_J, index_matrix, index_J, ld_vec, SD_vec, tuning_matrix, lambda0_vec, z_matrix, lambda_vec_func, func_lambda, Ifunc_SNP, dims, params) {
+    .Call(`_PANPRSnext_gsfPEN_cpp`, summary_betas, ld_J, index_matrix, index_J, ld_vec, SD_vec, tuning_matrix, lambda0_vec, z_matrix, lambda_vec_func, func_lambda, Ifunc_SNP, dims, params)
 }
 

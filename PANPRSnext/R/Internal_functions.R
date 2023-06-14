@@ -11,7 +11,7 @@ Tuning_setup_group_only <- function(
 
   topvec <- seq(from = min(lim_lambda), to = max(lim_lambda), len = llim_length)
 
-  for (i1 in 1:length(tau_vec)) {
+  for (i1 in seq_along(tau_vec)) {
       tau <- tau_vec[i1]
 
       for (t1 in 2:length(topvec)) {
@@ -25,13 +25,10 @@ Tuning_setup_group_only <- function(
   return(tuning_matrix)
 }
 
-
-
-
 Tuning_setup_group_func <- function(
     lambda_vec_func,
     lambda_vec_func_limit_len,
-    p.Threshold,
+    p_threshold,
     num_func,
     tau_vec,
     sub_tuning,
@@ -45,7 +42,7 @@ Tuning_setup_group_func <- function(
   topvec <- seq(from = min(lim_lambda), to = max(lim_lambda), len = llim_length)
 
   start <- 1
-  for (i1 in 1:length(tau_vec)) {
+  for (i1 in seq_along(tau_vec)) {
       tau <- tau_vec[i1]
 
       for (t1 in 2:length(topvec)) {
@@ -64,42 +61,45 @@ Tuning_setup_group_func <- function(
   if (is.null(lambda_vec_func)) {
       lambda_vec_func <- seq(0, lambda_vec_func_limit_len[1], length.out = lambda_vec_func_limit_len[2])
   }
-  n.threshold <- length(p.Threshold)
-  leng.lambda <- length(lambda_vec_func)
-  func_lambda0 <- permutations(length(lambda_vec_func), num_func, repeats.allowed = T)
+  func_lambda0 <- permutations(length(lambda_vec_func), num_func, repeats.allowed = TRUE)
   func_lambda <- func_lambda0 - 1
 
-  output <- list()
-  output[[1]] <- func_lambda
-  output[[2]] <- lambda_vec_func
-  output[[3]] <- tuning_matrix
+  output <- list(
+    func_lambda = func_lambda,
+    lambda_vec_func = lambda_vec_func,
+    tuning_matrix = tuning_matrix
+  )
 
   return(output)
 }
 
-Nonzero <- function(xx) {
+Non_zero <- function(xx) {
   return(length(which(xx != 0)))
 }
 
-Cleaning <- function(
+Clean_results <- function(
     beta_matrix,
     num_iter_vec,
     all_tuning_matrix
 ) {
-  tuningvec <- apply(all_tuning_matrix, 1, paste0, collapse = ":")
-  uniqvec <- unique(tuningvec)
-  mat <- match(uniqvec, tuningvec)
+  tuning_vec <- apply(all_tuning_matrix, 1, paste0, collapse = ":")
+  unique_vec <- unique(tuning_vec)
+  mat <- match(unique_vec, tuning_vec)
+
   num_iter_vec <- num_iter_vec[mat]
   beta_matrix <- beta_matrix[mat, ]
   all_tuning_matrix <- all_tuning_matrix[mat, ]
-  num_counts <- apply(beta_matrix, 1, Nonzero)
+  num_counts <- apply(beta_matrix, 1, Non_zero)
+
   od <- order(num_counts)
   num_iter_vec <- num_iter_vec[od]
   beta_matrix <- beta_matrix[od, ]
   all_tuning_matrix <- all_tuning_matrix[od, ]
-  output <- list()
-  output[[1]] <- num_iter_vec
-  output[[2]] <- beta_matrix
-  output[[3]] <- all_tuning_matrix
+
+  output <- list(
+    beta_matrix = beta_matrix,
+    num_iter_vec = num_iter_vec,
+    all_tuning_matrix = all_tuning_matrix
+  )
   return(output)
 }

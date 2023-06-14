@@ -6,10 +6,10 @@ PlinkLD_transform <- function(plinkLD, all_keep_snps) {
         stop("")
     }
 
-    ldJ <- plinkLD[, c("SNP_B", "SNP_A", "R")]
-    names(ldJ) <- c("SNP_A", "SNP_B", "R")
+    ld_J <- plinkLD[, c("SNP_B", "SNP_A", "R")]
+    names(ld_J) <- c("SNP_A", "SNP_B", "R")
 
-    ldJ <- rbind(plinkLD[, c("SNP_A", "SNP_B", "R")], ldJ)
+    ld_J <- rbind(plinkLD[, c("SNP_A", "SNP_B", "R")], ld_J)
 
-    return(ldJ)
+    return(ld_J)
 }

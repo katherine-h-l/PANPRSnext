@@ -2,9 +2,9 @@ Tuning_summary_stat <- function(
     beta_vec,
     family = "gaussian",
     penalty = "LOG",
-    n.tau = 6,
-    n.lambdas = 100,
-    lambda.min = NULL,
+    num_tau = 6,
+    num_lambda = 100,
+    lambda_min = NULL,
     pfactor = 0.1,
     min_to_max = FALSE
 ) {
@@ -14,24 +14,24 @@ Tuning_summary_stat <- function(
 
     if (family == "gaussian") {
         if (penalty == "LOG") {
-            l1.max <- max(abs(beta_vec))
-            if (is.null(lambda.min)) {
-                min_lambda <- l1.max * pfactor
+            l1_max <- max(abs(beta_vec))
+            if (is.null(lambda_min)) {
+                min_lambda <- l1_max * pfactor
             } else {
-                min_lambda <- lambda.min
+                min_lambda <- lambda_min
             }
             maxTau <- max(abs(beta_vec))
             if (min_to_max) {
-                Thresholds <- c(exp(seq(log(min_lambda), log(l1.max), len = n.lambdas)))
+                thresholds <- c(exp(seq(log(min_lambda), log(l1_max), len = num_lambda)))
             } else {
-                Thresholds <- c(exp(seq(log(l1.max), log(min_lambda), len = n.lambdas)))
+                thresholds <- c(exp(seq(log(l1_max), log(min_lambda), len = num_lambda)))
             }
-            tauset <- c(exp(seq(log(1e-6), log(maxTau), len = n.tau)))
+            tauset <- c(exp(seq(log(1e-6), log(maxTau), len = num_tau)))
 
             tau <- lambda <- c()
 
-            for (t in 1:length(Thresholds)) {
-                thres <- Thresholds[t]
+            for (t in seq_along()(thresholds)) {
+                thres <- thresholds[t]
                 slambda <- tauset * thres
 
                 tau <- c(tau, tauset)
