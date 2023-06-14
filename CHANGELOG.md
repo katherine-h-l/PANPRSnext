@@ -1,7 +1,9 @@
 # Changes
 
 - Re-implemented the data cleaning and return values for the R code.
-  - 
+  - Modified files: PANPRS.R
+  - Description: Re-added the result cleaning after the C++ code is run. The C++ code now returns a list the beta matrix, the number of iterations took for each set of tuning parameters in a vector, and the tuning parameters in a matrix.
+  - Caveat: The C++ code / R code is not behaving correctly and needs to be debugged to have the results match the previous version of the package.
 
 - Changed all data types in the C++ code to use armadillo
   - Modified files: PANPRS.cpp
@@ -10,6 +12,7 @@
 - Rewrote all the C++ parameter names and simplified R / C++ interface
   - Modified files: PANPRS.cpp PANPRS.hpp PANPRS.R
   - Description: Moved some initialization of matrices / vectors to C++ to reduce complexity of R function calls. Renamed most variables in C++ code to align with the variable names chosen for the R code. Removed many uneeded global variables in the C++ code.
+  - Notes: The C++ code is ~100 lines shorter and more readable now.
 
 - Rewrote major portion of the R code
   - Modified files: PANPRS.R PANPRS.cpp
