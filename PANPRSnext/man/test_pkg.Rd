@@ -2,10 +2,10 @@
 % Please edit documentation in R/PANPRS.R
 \name{test_pkg}
 \alias{test_pkg}
-\title{Testing function}
+\title{Run the package on the provided data set}
 \usage{
 test_pkg()
 }
 \description{
-Testing function
+Run the package on the provided data set
 }

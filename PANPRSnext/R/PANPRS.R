@@ -1,4 +1,4 @@
-#' Testing function
+#' Run the package on the provided data set
 #' @export
 test_pkg <- function() {
   data("summaryZ")
@@ -40,8 +40,6 @@ gsfPEN_R <- function(
     debug_output = 0
 ) {
 
-  time <- proc.time()
-
   if (z_scale != 1) {
     error("Tuning values set-up for multiple traits analysis requires z_scale=1.")
   }
@@ -72,7 +70,7 @@ gsfPEN_R <- function(
 
 
   if (any(c(is.null(tuning_matrix), is.null(lambda_vec_func)))) {
-    median_val <- median(apply(abs(summary_betas), 1, sum), na.rm = T)
+    median_val <- median(apply(abs(summary_betas), 1, sum), na.rm = TRUE)
     tau_vec <- sort(median_val * tau_factor)
     lim_lambda <- quantile(abs(summary_z[, 1]), lim_lambda)
 
@@ -85,13 +83,13 @@ gsfPEN_R <- function(
     lambda_vec_func <- output[[2]]
     tuning_matrix <- output[[3]]
   } else {
-    func_lambda0 <- permutations(length(lambda_vec_func), num_func, repeats.allowed = T)
+    func_lambda0 <- permutations(length(lambda_vec_func), num_func, repeats.allowed = TRUE)
     func_lambda <- func_lambda0 - 1
   }
 
 
 
-  beta_index <- c(1:nrow(summary_betas)) - 1
+  beta_index <- c(seq_len(nrow(summary_betas))) - 1
   SNP_names <- rownames(summary_betas)
 
   # Takes only the SNPs that are present in both the PLINK data set and the GWAs
@@ -108,7 +106,7 @@ gsfPEN_R <- function(
   ld_J[, 1] <- J_id_matrix[, 1]
   ld_J[, 2] <- J_id_matrix[, 2]
 
-  od <- order(J_id_matrix[, 1], J_id_matrix[, 2], decreasing = F)
+  od <- order(J_id_matrix[, 1], J_id_matrix[, 2], decreasing = FALSE)
   ld_J <- ld_J[od, ]
 
   wind <- which(!beta_index %in% ld_J[, 1])
@@ -142,10 +140,8 @@ gsfPEN_R <- function(
 
   ld_J <- ld_J[, 2]
 
-  length_ldJ <- length(ld_J)
-
   if (is.null(upper_val)) {
-    upper_val <- ceiling(max(abs(summary_betas), na.rm = T) * 50)
+    upper_val <- ceiling(max(abs(summary_betas), na.rm = TRUE) * 50)
   }
 
 
@@ -279,9 +275,6 @@ gsfPEN_R <- function(
   # }
   #
   # ll <- list(beta_matrix = beta_matrix, num_iter_vec = num_iter_vec, all_tuning_matrix = all_tuning_matrix)
-  #
-  # time <- proc.time() - time
-  # print(paste0("Time elapsed: ", time[3], " seconds"))
   #
   # return(ll)
 
