@@ -292,8 +292,6 @@ Rcpp::List gsfPEN_cpp(
   }
   PutRNGstate();
 
-  num_iter_vec.print();
-
   return Rcpp::List::create(
     Rcpp::Named("beta_matrix") = beta_matrix,
     Rcpp::Named("iterations") = num_iter_vec,

@@ -1,6 +1,8 @@
 #' Run the package on the provided data set
 #' @export
-test_pkg <- function() {
+test_pkg <- function(
+  debug_output = FALSE
+) {
   data("summaryZ")
   data("Nvec")
   data("plinkLD")
@@ -37,8 +39,10 @@ gsfPEN_R <- function(
     lambda_vec_func = NULL,
     lambda_vec_func_limit_len = c(1.5, 3),
     df_max = NULL,
-    debug_output = 0
+    debug_output = FALSE
 ) {
+
+  time <- proc.time()
 
   if (z_scale != 1) {
     error("Tuning values set-up for multiple traits analysis requires z_scale=1.")
@@ -171,7 +175,7 @@ gsfPEN_R <- function(
   nrow_tuning_matrix <- nrow(tuning_matrix)
   ncol_tuning_matrix <- ncol(tuning_matrix)
 
-  nrow_all_tuning_matrix <- nrow(tuning_matrix) * length(p_threshold) * nrow_func_lambda
+  nrow_all_tuning_matrix <- nrow_tuning_matrix * length(p_threshold) * nrow_func_lambda
   ncol_all_tuning_matrix <- (num_func + 1) + 2
 
   nrow_beta_matrix <- nrow_all_tuning_matrix
@@ -223,32 +227,34 @@ gsfPEN_R <- function(
     params
   )
 
-  beta_matrix <- matrix(
-    Z$beta_matrix,
-    nrow = nrow_all_tuning_matrix,
-    ncol = ncol_beta_matrix,
-    byrow = TRUE
-  )
+  # beta_matrix <- matrix(
+  #   Z$beta_matrix,
+  #   nrow = nrow_all_tuning_matrix,
+  #   ncol = ncol_beta_matrix,
+  #   byrow = TRUE
+  # )
+  beta_matrix <- Z$beta_matrix
   colnames(beta_matrix) <- paste0(
     rep(SNP_names, times = Q),
     ".trait",
     rep(c(1:Q), each = P)
   )
 
-  all_tuning_matrix <- matrix(
-    Z$all_tuning_matrix,
-    nrow = nrow_all_tuning_matrix,
-    ncol = ncol_all_tuning_matrix,
-    byrow = TRUE
+  # all_tuning_matrix <- matrix(
+  #   Z$all_tuning_matrix,
+  #   nrow = nrow_all_tuning_matrix,
+  #   ncol = ncol_all_tuning_matrix,
+  #   byrow = TRUE
+  # )
+  all_tuning_matrix <- Z$all_tuning_matrix
+    colnames(all_tuning_matrix) <- c(
+    "lambda0",
+    paste0("lambdaf", c(1:num_func)),
+    "lamda2",
+    "tau2"
   )
 
   num_iter_vec <- Z$num_iter_vec
-
-  colnames(all_tuning_matrix) <- c(
-    "lam0",
-    paste0("lam.f", c(1:num_func)),
-    "lam2", "tau"
-  )
 
   output <- Clean_results(
     beta_matrix = beta_matrix,
@@ -256,12 +262,15 @@ gsfPEN_R <- function(
     all_tuning_matrix = all_tuning_matrix
   )
 
-  if (debug_output == 0) {
+  if (debug_output) {
     converge_index <- which(num_iter_vec > 0)
     num_iter_vec <- output$num_iter_vec[converge_index]
     beta_matrix <- output$beta_matrix[converge_index, ]
     all_tuning_matrix <- output$all_tuning_matrix[converge_index, ]
   }
+
+  time <- proc.time() - time
+  print(paste0("Time elapsed: ", time[3], " seconds"))
 
   return(output)
 }
