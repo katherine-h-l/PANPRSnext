@@ -1,5 +1,16 @@
 # Changes
 
+- Re-implemented the data cleaning and return values for the R code.
+  - 
+
+- Changed all data types in the C++ code to use armadillo
+  - Modified files: PANPRS.cpp
+  - Description: Changed all data types to be base C++ types (like double or int), or to use armadillo for matrices (arma::Mat<double> arma::Mat<int>) and vectors (arma::Col<double> and arma::Col<int>).
+
+- Rewrote all the C++ parameter names and simplified R / C++ interface
+  - Modified files: PANPRS.cpp PANPRS.hpp PANPRS.R
+  - Description: Moved some initialization of matrices / vectors to C++ to reduce complexity of R function calls. Renamed most variables in C++ code to align with the variable names chosen for the R code. Removed many uneeded global variables in the C++ code.
+
 - Rewrote major portion of the R code
   - Modified files: PANPRS.R PANPRS.cpp
   - Description: Rewrote and renamed many parameters to be more consistent. Modified how some parameters are stored (lists -> matrices) so that they can be passed to C++ as an Armadillo matrix. Parameters are now reorganized and succesfully get passed to the placeholder C++ function.
