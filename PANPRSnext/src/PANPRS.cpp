@@ -52,8 +52,6 @@ Rcpp::List gsfPEN_cpp(
 
   double epsilon = 0.0001;
 
-  int s_tuning = 0;
-
   arma::Col<int> num_iter_vec(nrow_all_tuning_matrix, arma::fill::zeros);
   arma::Col<double> temp_lambda_vec(ncol_func_lambda, arma::fill::zeros);
   arma::Col<double> sum_betas(P, arma::fill::zeros);
@@ -64,12 +62,11 @@ Rcpp::List gsfPEN_cpp(
   arma::Mat<double> temp_b_matrix(P, Q, arma::fill::zeros);
   arma::Mat<int> skip(P, Q, arma::fill::zeros);
   
-  int tuning_index = -1;
-
   GetRNGstate();
 
   // len_p_Thresold = 4
   // By default, p.Threshold = seq(0.5, 10^-4, length.out=4)
+  int tuning_index = -1;
   for (int threshold_index = 0; threshold_index < leng_p_threshold; threshold_index++)
   {
     for (int tun_idx_1 = 0; tun_idx_1 < nrow_func_lambda; tun_idx_1++)
@@ -95,7 +92,7 @@ Rcpp::List gsfPEN_cpp(
         all_tuning_matrix(tuning_index, ncol_all_tuning_matrix - 1) = tau2;
 
         bool converges = true;
-        for (int n = 0; n < num_iter; n++)
+        for (int n = 1; n <= num_iter; n++)
         {
           // This is non zero when there are Z-scores (summary_betas) that are not in the linkage data (LdJ)
           // Realistically, this is always 0 given the R interfaces only selects those that are present in both
@@ -215,7 +212,7 @@ Rcpp::List gsfPEN_cpp(
           bool found = false;
           int df_q = 0;
 
-          for (int p = 0; p< P; p++)
+          for (int p = 0; p < P; p++)
           {
             for (int q = 0; q < Q; q++)
             {
@@ -249,18 +246,17 @@ Rcpp::List gsfPEN_cpp(
 
           if (!found)
           {
-            int idx = 0;
+            int beta_idx = 0;
             for (int q = 0; q < Q; q++)
             {
               for (int p = 0; p < P; p++)
               {
-                beta_matrix(tuning_index, idx) = joint_b_matrix(p, q);
-                idx++;
+                beta_matrix(tuning_index, beta_idx) = joint_b_matrix(p, q);
+                beta_idx++;
               }
             }
 
-            num_iter_vec(tuning_index) = (n + 1);
-            s_tuning = tuning_index;
+            num_iter_vec(tuning_index) = n;
             break;
           }
 
@@ -290,7 +286,7 @@ Rcpp::List gsfPEN_cpp(
             }
           }
 
-          num_iter_vec(tuning_index) = (n + 1);
+          num_iter_vec(tuning_index) = n;
         }
       }
     }
