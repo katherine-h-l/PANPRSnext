@@ -62,8 +62,10 @@ Rcpp::List gsfPEN_cpp(
   arma::Mat<double> beta_matrix(nrow_beta_matrix, ncol_beta_matrix, arma::fill::zeros);
   arma::Mat<double> joint_b_matrix(P, Q, arma::fill::zeros);
   arma::Mat<double> temp_b_matrix(P, Q, arma::fill::zeros);
-  arma::Mat<int> skip_b(P, Q, arma::fill::zeros);
+  arma::Mat<int> skip(P, Q, arma::fill::zeros);
   
+  int tuning_index = -1;
+
   GetRNGstate();
 
   // len_p_Thresold = 4
@@ -74,7 +76,8 @@ Rcpp::List gsfPEN_cpp(
     {
       for (int tun_idx_2 = 0; tun_idx_2 < nrow_tuning_matrix; tun_idx_2++)
       {
-        int tuning_index = tun_idx_1 * nrow_tuning_matrix + tun_idx_2;
+        // int tuning_index = tun_idx_1 * nrow_tuning_matrix + tun_idx_2;
+        tuning_index++;
 
         for (int func_index = 0; func_index < ncol_func_lambda; func_index++)
         {
@@ -162,7 +165,7 @@ Rcpp::List gsfPEN_cpp(
 
             for (int q = 0; q < Q; q++)
             {
-              if (skip_b(j, q) == 0)
+              if (skip(j, q) == 0)
               {
                 if (summary_betas(j, q) != 0.0)
                 {
@@ -186,7 +189,7 @@ Rcpp::List gsfPEN_cpp(
                     else
                     {
                       bj_bar = 0.0;
-                      skip_b(j, q) = 1;
+                      skip(j, q) = 1;
                     }
                   }
 
@@ -216,11 +219,11 @@ Rcpp::List gsfPEN_cpp(
           {
             for (int q = 0; q < Q; q++)
             {
-              if (fabs(joint_b_matrix(p, q)) > upper_val) skip_b(p, q) = 1;
+              if (fabs(joint_b_matrix(p, q)) > upper_val) skip(p, q) = 1;
 
               if (q == 0)
               {
-                if (fabs(joint_b_matrix(p, q)) != 0) df_q = df_q + 1;
+                if (fabs(joint_b_matrix(p, q)) != 0) df_q++;
 
                 if (df_q > df_max)
                 {
@@ -246,11 +249,13 @@ Rcpp::List gsfPEN_cpp(
 
           if (!found)
           {
+            int idx = 0;
             for (int q = 0; q < Q; q++)
             {
               for (int p = 0; p < P; p++)
               {
-                beta_matrix(tuning_index, p) = joint_b_matrix(p, q);
+                beta_matrix(tuning_index, idx) = joint_b_matrix(p, q);
+                idx++;
               }
             }
 
@@ -294,7 +299,7 @@ Rcpp::List gsfPEN_cpp(
 
   return Rcpp::List::create(
     Rcpp::Named("beta_matrix") = beta_matrix,
-    Rcpp::Named("iterations") = num_iter_vec,
+    Rcpp::Named("num_iter_vec") = num_iter_vec,
     Rcpp::Named("all_tuning_matrix") = all_tuning_matrix
   );
 }

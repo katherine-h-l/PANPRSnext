@@ -92,6 +92,7 @@ Clean_results <- function(
   all_tuning_matrix <- all_tuning_matrix[mat, ]
 
 
+  # Reorders the rows by the number of non-zero coefficients
   num_counts <- apply(beta_matrix, 1, Non_zero)
   od <- order(num_counts)
 

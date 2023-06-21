@@ -227,6 +227,8 @@ gsfPEN_R <- function(
     params
   )
 
+  # return(Z)
+
   # beta_matrix <- matrix(
   #   Z$beta_matrix,
   #   nrow = nrow_all_tuning_matrix,
@@ -247,7 +249,7 @@ gsfPEN_R <- function(
   #   byrow = TRUE
   # )
   all_tuning_matrix <- Z$all_tuning_matrix
-    colnames(all_tuning_matrix) <- c(
+  colnames(all_tuning_matrix) <- c(
     "lambda0",
     paste0("lambdaf", c(1:num_func)),
     "lamda2",
