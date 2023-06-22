@@ -190,8 +190,8 @@ gsfPEN_R <- function(
     ncol_z_matrix,          # 6
     nrow_func_lambda,       # 7
     ncol_func_lambda,       # 8
-    nrow_tuning_matrix,    # 9
-    ncol_tuning_matrix,    # 10
+    nrow_tuning_matrix,     # 9
+    ncol_tuning_matrix,     # 10
     nrow_all_tuning_matrix, # 11 == num_tuning
     ncol_all_tuning_matrix, # 12
     nrow_beta_matrix,       # 13
@@ -199,13 +199,13 @@ gsfPEN_R <- function(
   )
 
   params <- c(
-    upper_val,        # 1
-    n_iter,           # 2
-    breaking,         # 3
-    z_scale,          # 4
-    df_max,           # 5
-    length(p_threshold), # 6
-    num_indices      # 7
+    upper_val,              # 1
+    n_iter,                 # 2
+    breaking,               # 3
+    z_scale,                # 4
+    df_max,                 # 5
+    length(p_threshold),    # 6
+    num_indices             # 7
   )
 
   print(paste0("Number of total tuning combinations = ", nrow_all_tuning_matrix))

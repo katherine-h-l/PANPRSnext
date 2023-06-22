@@ -73,7 +73,6 @@ Rcpp::List gsfPEN_cpp(
     {
       for (int tun_idx_2 = 0; tun_idx_2 < nrow_tuning_matrix; tun_idx_2++)
       {
-        // int tuning_index = tun_idx_1 * nrow_tuning_matrix + tun_idx_2;
         tuning_index++;
 
         for (int func_index = 0; func_index < ncol_func_lambda; func_index++)

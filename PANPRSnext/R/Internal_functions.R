@@ -83,21 +83,21 @@ Clean_results <- function(
     all_tuning_matrix
 ) {
   # Selects only the unique rows, corresponding to unique tuning parameters
-  # tuning_vec <- apply(all_tuning_matrix, 1, paste0, collapse = ":")
-  # unique_vec <- unique(tuning_vec)
-  # mat <- match(unique_vec, tuning_vec)
+  tuning_vec <- apply(all_tuning_matrix, 1, paste0, collapse = ":")
+  unique_vec <- unique(tuning_vec)
+  mat <- match(unique_vec, tuning_vec)
 
-  # num_iter_vec <- num_iter_vec[mat]
-  # beta_matrix <- beta_matrix[mat, ]
-  # all_tuning_matrix <- all_tuning_matrix[mat, ]
+  num_iter_vec <- num_iter_vec[mat]
+  beta_matrix <- beta_matrix[mat, ]
+  all_tuning_matrix <- all_tuning_matrix[mat, ]
 
   # Reorders the rows by the number of non-zero coefficients
-  # num_counts <- apply(beta_matrix, 1, Non_zero)
-  # od <- order(num_counts)
+  num_counts <- apply(beta_matrix, 1, Non_zero)
+  od <- order(num_counts)
 
-  # num_iter_vec <- num_iter_vec[od]
-  # beta_matrix <- beta_matrix[od, ]
-  # all_tuning_matrix <- all_tuning_matrix[od, ]
+  num_iter_vec <- num_iter_vec[od]
+  beta_matrix <- beta_matrix[od, ]
+  all_tuning_matrix <- all_tuning_matrix[od, ]
 
   output <- list(
     beta_matrix = beta_matrix,
