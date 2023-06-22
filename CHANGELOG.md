@@ -1,5 +1,14 @@
 # Changes
 
+- Fixed return values dimensions not matching between the previous version and current version of the code.
+  - Modified files: PANPRS.cpp
+  - Description: The return values were being returned from the C++ code and processed by the R cleaning function incorrectly.
+  - Caveat: Not all values are being calculated correctly. Roughly 2/3 of the values are incorrect. Still attempting to debug.
+
+- Fixed the return value all_tuning_matrix to match between the previous version and current version of the code.
+  - Modified files: PANPRS.cpp
+  - Description: The return value all_tuning_matrix was not being set correctly in the C++ code. This has been fixed. Loop index was also not being incremented correctly, which has also been fixed.
+
 - Re-implemented the data cleaning and return values for the R code.
   - Modified files: PANPRS.R
   - Description: Re-added the result cleaning after the C++ code is run. The C++ code now returns a list the beta matrix, the number of iterations took for each set of tuning parameters in a vector, and the tuning parameters in a matrix.
