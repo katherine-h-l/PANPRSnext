@@ -17,6 +17,28 @@ test_pkg <- function(
   return(output)
 }
 
+#' Run the package on the provided data set
+#' DEBUG VERSION
+#' @export
+debug_test_pkg <- function(
+  debug_output = FALSE
+) {
+  data("summaryZ")
+  data("Nvec")
+  data("plinkLD")
+  data("funcIndex")
+  output <- gsfPEN_R(
+    summary_z = summaryZ,
+    n_vec = Nvec,
+    plinkLD = plinkLD,
+    func_index = funcIndex,
+    sub_tuning = 1,
+    lambda_vec_func_limit_len = c(1.5, 1)
+  )
+
+  return(output)
+}
+
 #' Main Function
 #' @export
 gsfPEN_R <- function(
@@ -41,6 +63,10 @@ gsfPEN_R <- function(
     df_max = NULL,
     debug_output = FALSE
 ) {
+
+  # Take a small subset of the summary_z matrix for testing purposes
+  # summary_z <- summary_z[1:10, ]
+  # func_index <- func_index[1:10, ]
 
   time <- proc.time()
 
@@ -182,20 +208,21 @@ gsfPEN_R <- function(
   ncol_beta_matrix <- P * Q
 
   dims <- c(
-    P,                      # 1
-    Q,                      # 2
-    nrow_index_matrix,      # 3
-    ncol_index_matrix,      # 4
-    nrow_z_matrix,          # 5
-    ncol_z_matrix,          # 6
-    nrow_func_lambda,       # 7
-    ncol_func_lambda,       # 8
-    nrow_tuning_matrix,     # 9
-    ncol_tuning_matrix,     # 10
-    nrow_all_tuning_matrix, # 11 == num_tuning
-    ncol_all_tuning_matrix, # 12
-    nrow_beta_matrix,       # 13
-    ncol_beta_matrix        # 14
+    num_SNP,                # 1
+    P,                      # 2
+    Q,                      # 3
+    nrow_index_matrix,      # 4
+    ncol_index_matrix,      # 5
+    nrow_z_matrix,          # 6
+    ncol_z_matrix,          # 7
+    nrow_func_lambda,       # 8
+    ncol_func_lambda,       # 9
+    nrow_tuning_matrix,     # 10
+    ncol_tuning_matrix,     # 11
+    nrow_all_tuning_matrix, # 12 == num_tuning
+    ncol_all_tuning_matrix, # 13
+    nrow_beta_matrix,       # 14
+    ncol_beta_matrix        # 15
   )
 
   params <- c(
@@ -227,14 +254,6 @@ gsfPEN_R <- function(
     params
   )
 
-  # return(Z)
-
-  # beta_matrix <- matrix(
-  #   Z$beta_matrix,
-  #   nrow = nrow_all_tuning_matrix,
-  #   ncol = ncol_beta_matrix,
-  #   byrow = TRUE
-  # )
   beta_matrix <- Z$beta_matrix
   colnames(beta_matrix) <- paste0(
     rep(SNP_names, times = Q),
@@ -242,12 +261,6 @@ gsfPEN_R <- function(
     rep(c(1:Q), each = P)
   )
 
-  # all_tuning_matrix <- matrix(
-  #   Z$all_tuning_matrix,
-  #   nrow = nrow_all_tuning_matrix,
-  #   ncol = ncol_all_tuning_matrix,
-  #   byrow = TRUE
-  # )
   all_tuning_matrix <- Z$all_tuning_matrix
   colnames(all_tuning_matrix) <- c(
     "lambda0",
@@ -264,11 +277,12 @@ gsfPEN_R <- function(
     all_tuning_matrix = all_tuning_matrix
   )
 
-  if (debug_output) {
+  # Remove the tuning combinations that did not converge (correspons to -2 in num_iter_vec)
+  if (!debug_output) {
     converge_index <- which(num_iter_vec > 0)
-    num_iter_vec <- output$num_iter_vec[converge_index]
-    beta_matrix <- output$beta_matrix[converge_index, ]
-    all_tuning_matrix <- output$all_tuning_matrix[converge_index, ]
+    output$num_iter_vec <- output$num_iter_vec[converge_index]
+    output$beta_matrix <- output$beta_matrix[converge_index, ]
+    output$all_tuning_matrix <- output$all_tuning_matrix[converge_index, ]
   }
 
   time <- proc.time() - time

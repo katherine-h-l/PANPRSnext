@@ -21,26 +21,28 @@ Rcpp::List gsfPEN_cpp(
   arma::Col<int> dims,
   arma::Col<double> params
 ) {
-  int P = dims(0); // Number of SNPs
-  int Q = dims(1);
+  int num_SNP = dims(0);
 
-  int nrow_index_matrix = dims(2);
-  int ncol_index_matrix = dims(3);
+  int P = dims(1);
+  int Q = dims(2);
 
-  int nrow_z_matrix = dims(4);
-  int ncol_z_matrix = dims(5);
+  int nrow_index_matrix = dims(3);
+  int ncol_index_matrix = dims(4);
 
-  int nrow_func_lambda = dims(6);
-  int ncol_func_lambda = dims(7);
+  int nrow_z_matrix = dims(5);
+  int ncol_z_matrix = dims(6);
 
-  int nrow_tuning_matrix = dims(8);
-  int ncol_tuning_matrix = dims(9);
+  int nrow_func_lambda = dims(7);
+  int ncol_func_lambda = dims(8);
 
-  int nrow_all_tuning_matrix = dims(10);
-  int ncol_all_tuning_matrix = dims(11);
+  int nrow_tuning_matrix = dims(9);
+  int ncol_tuning_matrix = dims(10);
 
-  int nrow_beta_matrix = dims(12);
-  int ncol_beta_matrix = dims(13);
+  int nrow_all_tuning_matrix = dims(11);
+  int ncol_all_tuning_matrix = dims(12);
+
+  int nrow_beta_matrix = dims(13);
+  int ncol_beta_matrix = dims(14);
 
   double upper_val = params(0);
   int num_iter = params(1);
@@ -81,7 +83,8 @@ Rcpp::List gsfPEN_cpp(
           all_tuning_matrix(tuning_index, func_index + 1) = temp_lambda_vec(func_index);
         }
 
-        double lambda0 = lambda0_vec(threshold_index); // lambda0vec = abs(-qnorm(p.Threshold/2)) -> 0.67 0.96 1.38 3.89
+        // lambda0vec = abs(-qnorm(p.Threshold/2)) -> 0.67 0.96 1.38 3.89
+        double lambda0 = lambda0_vec(threshold_index);
         all_tuning_matrix(tuning_index, 0) = lambda0;
 
         double lambda2 = tuning_matrix(tun_idx_2, 2);
@@ -93,6 +96,7 @@ Rcpp::List gsfPEN_cpp(
         bool converges = true;
         for (int n = 1; n <= num_iter; n++)
         {
+          printf("n: %d\n", n);
           // This is non zero when there are Z-scores (summary_betas) that are not in the linkage data (LdJ)
           // Realistically, this is always 0 given the R interfaces only selects those that are present in both
           if (num_indices != 0)
@@ -146,7 +150,7 @@ Rcpp::List gsfPEN_cpp(
           // All that is necessary to parallelize it (to start) (will test this)
           // Since there are lots of nested for loops, it may be possible to parallelize it further with
           // “collapse(n)” where n is the number of nested loops to parallelize
-          for (int p = 0; p < P; p++)
+          for (int p = 0; p < num_SNP; p++)
           {
             int j = index_matrix(p, 0);
             double lambda1 = lambda0;
@@ -259,7 +263,7 @@ Rcpp::List gsfPEN_cpp(
             break;
           }
 
-          for (int p = 0; p < P; p++)
+          for (int p = 0; p < num_SNP; p++)
           {
             int j = index_matrix(p, 0);
             sum_betas(j) = 0.0;

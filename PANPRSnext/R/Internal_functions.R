@@ -9,13 +9,13 @@ Tuning_setup_group_only <- function(
   lambda_vec <- seq((min(lim_lambda)), (max(lim_lambda)), len = len_lambda)
   tuning_matrix <- cbind(lambda_vec, 1, 0, 1)
 
-  topvec <- seq(from = min(lim_lambda), to = max(lim_lambda), len = llim_length)
+  top_vec <- seq(from = min(lim_lambda), to = max(lim_lambda), len = llim_length)
 
   for (i1 in seq_along(tau_vec)) {
       tau <- tau_vec[i1]
 
-      for (t1 in 2:length(topvec)) {
-          top <- topvec[t1]
+      for (t1 in 2:length(top_vec)) {
+          top <- top_vec[t1]
           lambda_vec <- seq(min(lim_lambda), (top - 0.05), len = sub_tuning)
 
           temp <- (top - lambda_vec) * (median_val + tau)
@@ -39,14 +39,14 @@ Tuning_setup_group_func <- function(
 ) {
   lambda_vec <- seq((min(lim_lambda)), (max(lim_lambda)), len = len_lambda)
 
-  topvec <- seq(from = min(lim_lambda), to = max(lim_lambda), len = llim_length)
+  top_vec <- seq(from = min(lim_lambda), to = max(lim_lambda), len = llim_length)
 
   start <- 1
   for (i1 in seq_along(tau_vec)) {
       tau <- tau_vec[i1]
 
-      for (t1 in 2:length(topvec)) {
-          top <- topvec[t1]
+      for (t1 in 2:length(top_vec)) {
+          top <- top_vec[t1]
           lambda_vec <- seq(min(lim_lambda), (top - 0.05), len = sub_tuning)
 
           temp <- (top - lambda_vec) * (median_val + tau)
@@ -93,11 +93,11 @@ Clean_results <- function(
 
   # Reorders the rows by the number of non-zero coefficients
   num_counts <- apply(beta_matrix, 1, Non_zero)
-  od <- order(num_counts)
+  ord <- order(num_counts)
 
-  num_iter_vec <- num_iter_vec[od]
-  beta_matrix <- beta_matrix[od, ]
-  all_tuning_matrix <- all_tuning_matrix[od, ]
+  num_iter_vec <- num_iter_vec[ord]
+  beta_matrix <- beta_matrix[ord, ]
+  all_tuning_matrix <- all_tuning_matrix[ord, ]
 
   output <- list(
     beta_matrix = beta_matrix,
