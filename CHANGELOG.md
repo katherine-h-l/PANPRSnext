@@ -1,5 +1,11 @@
 # Changes
 
+- Fixed calculations in new version of the code. Issue was within one of the loops in the C++ code.
+  - Modified files: PANPRS.cpp
+  - How error was found: Took a subset of the initial summaryZ and funcIndex data. Reduced the number of tuning parameters as well so that the output would be printable / readable. Inserted various print statements through the loops in order to determine where values were different accross the new and old code. 
+  - Description: The loop was not iterating over the correct number of values. This has been fixed. The code now matches the previous version of the code in terms of output. 
+  - Caveat: Checking for exact equality between new and old does not work due to numerical precision. Checking for approximate equality does work however and the difference is well beyond any meaningful amount. (The ones I checked differend by ~1e-10)
+
 - Fixed return values dimensions not matching between the previous version and current version of the code.
   - Modified files: PANPRS.cpp
   - Description: The return values were being returned from the C++ code and processed by the R cleaning function incorrectly.
