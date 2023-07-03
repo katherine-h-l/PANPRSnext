@@ -8,10 +8,10 @@ test_pkg <- function(
   data("plinkLD")
   data("funcIndex")
   output <- gsfPEN_R(
-    summary_z = summaryZ,
-    n_vec = Nvec,
-    plinkLD = plinkLD,
-    func_index = funcIndex
+    summary_z = summaryZ, # nolint: object_usage_linter.
+    n_vec = Nvec, # nolint: object_usage_linter.
+    plinkLD = plinkLD, # nolint: object_usage_linter.
+    func_index = funcIndex # nolint: object_usage_linter.
   )
 
   return(output)
@@ -28,10 +28,10 @@ debug_test_pkg <- function(
   data("plinkLD")
   data("funcIndex")
   output <- gsfPEN_R(
-    summary_z = summaryZ,
-    n_vec = Nvec,
-    plinkLD = plinkLD,
-    func_index = funcIndex,
+    summary_z = summaryZ, # nolint: object_usage_linter.
+    n_vec = Nvec, # nolint: object_usage_linter.
+    plinkLD = plinkLD, # nolint: object_usage_linter.
+    func_index = funcIndex, # nolint: object_usage_linter.
     sub_tuning = 1,
     lambda_vec_func_limit_len = c(1.5, 1)
   )
@@ -71,7 +71,7 @@ gsfPEN_R <- function(
   time <- proc.time()
 
   if (z_scale != 1) {
-    error("Tuning values set-up for multiple traits analysis requires z_scale=1.")
+    error("Tuning values set-up for multiple traits analysis requires z_scale=1.") # nolint: object_usage_linter.
   }
 
   num_func <- ncol(func_index)
@@ -121,7 +121,7 @@ gsfPEN_R <- function(
 
     rm(output)
   } else {
-    func_lambda0 <- permutations(length(lambda_vec_func), num_func, repeats.allowed = TRUE)
+    func_lambda0 <- permutations(length(lambda_vec_func), num_func, repeats.allowed = TRUE) # nolint: object_usage_linter.
     func_lambda <- func_lambda0 - 1
   }
 
