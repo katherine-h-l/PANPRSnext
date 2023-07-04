@@ -21,7 +21,9 @@ test_pkg <- function(
 #' DEBUG VERSION
 #' @export
 debug_test_pkg <- function(
-  debug_output = FALSE
+  debug_output = FALSE,
+  sub_tuning = 1,
+  lambda_vec_func_limit_len = c(1.5, 1)
 ) {
   data("summaryZ")
   data("Nvec")
@@ -32,8 +34,8 @@ debug_test_pkg <- function(
     n_vec = Nvec, # nolint: object_usage_linter.
     plinkLD = plinkLD, # nolint: object_usage_linter.
     func_index = funcIndex, # nolint: object_usage_linter.
-    sub_tuning = 1,
-    lambda_vec_func_limit_len = c(1.5, 1)
+    sub_tuning = sub_tuning,
+    lambda_vec_func_limit_len = lambda_vec_func_limit_len
   )
 
   return(output)
@@ -63,10 +65,6 @@ gsfPEN_R <- function(
     df_max = NULL,
     debug_output = FALSE
 ) {
-
-  # Take a small subset of the summary_z matrix for testing purposes
-  # summary_z <- summary_z[1:10, ]
-  # func_index <- func_index[1:10, ]
 
   time <- proc.time()
 
@@ -121,7 +119,11 @@ gsfPEN_R <- function(
 
     rm(output)
   } else {
-    func_lambda0 <- permutations(length(lambda_vec_func), num_func, repeats.allowed = TRUE) # nolint: object_usage_linter.
+    func_lambda0 <- permutations( # nolint: object_usage_linter.
+      length(lambda_vec_func),
+      num_func,
+      repeats.allowed = TRUE
+    )
     func_lambda <- func_lambda0 - 1
   }
 
@@ -271,19 +273,19 @@ gsfPEN_R <- function(
 
   num_iter_vec <- Z$num_iter_vec
 
+  # Remove the tuning combinations that did not converge (correspons to -2 in num_iter_vec)
+  if (!debug_output) {
+    converge_index <- which(num_iter_vec > 0)
+    num_iter_vec <- num_iter_vec[converge_index]
+    beta_matrix <- beta_matrix[converge_index, ]
+    all_tuning_matrix <- all_tuning_matrix[converge_index, ]
+  }
+
   output <- Clean_results(
     beta_matrix = beta_matrix,
     num_iter_vec = num_iter_vec,
     all_tuning_matrix = all_tuning_matrix
   )
-
-  # Remove the tuning combinations that did not converge (correspons to -2 in num_iter_vec)
-  if (!debug_output) {
-    converge_index <- which(num_iter_vec > 0)
-    output$num_iter_vec <- output$num_iter_vec[converge_index]
-    output$beta_matrix <- output$beta_matrix[converge_index, ]
-    output$all_tuning_matrix <- output$all_tuning_matrix[converge_index, ]
-  }
 
   time <- proc.time() - time
   print(paste0("Time elapsed: ", time[3], " seconds"))

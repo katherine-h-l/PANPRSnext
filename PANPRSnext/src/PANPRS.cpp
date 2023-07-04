@@ -15,7 +15,7 @@ Rcpp::List gsfPEN_cpp(
   arma::Mat<double> tuning_matrix,
   arma::Col<double> lambda0_vec,
   arma::Mat<double> z_matrix,
-  arma::Col<double> lambda_vec_func,
+  arma::Col<double> lambda_vec,
   arma::Mat<int> func_lambda,
   arma::Col<int> Ifunc_SNP,
   arma::Col<int> dims,
@@ -79,7 +79,7 @@ Rcpp::List gsfPEN_cpp(
 
         for (int func_index = 0; func_index < ncol_func_lambda; func_index++)
         {
-          temp_lambda_vec(func_index) = lambda_vec_func(func_lambda(tun_idx_1, func_index));
+          temp_lambda_vec(func_index) = lambda_vec(func_lambda(tun_idx_1, func_index));
           all_tuning_matrix(tuning_index, func_index + 1) = temp_lambda_vec(func_index);
         }
 
@@ -96,7 +96,6 @@ Rcpp::List gsfPEN_cpp(
         bool converges = true;
         for (int n = 1; n <= num_iter; n++)
         {
-          printf("n: %d\n", n);
           // This is non zero when there are Z-scores (summary_betas) that are not in the linkage data (LdJ)
           // Realistically, this is always 0 given the R interfaces only selects those that are present in both
           if (num_indices != 0)
@@ -214,7 +213,6 @@ Rcpp::List gsfPEN_cpp(
           // Actual iteration that checks convergence
           bool found = false;
           int df_q = 0;
-
           for (int p = 0; p < P; p++)
           {
             for (int q = 0; q < Q; q++)
@@ -272,6 +270,9 @@ Rcpp::List gsfPEN_cpp(
             {
               temp_b_matrix(j, q) = joint_b_matrix(j, q);
               sum_betas(j) += fabs(joint_b_matrix(j, q));
+            }
+            if (tuning_index == 9) {
+              if (sum_betas(j) != 0) printf("sum_betas(%d)=%e\n", j, sum_betas(j));
             }
           }
 
