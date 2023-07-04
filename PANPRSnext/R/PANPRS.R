@@ -11,7 +11,8 @@ test_pkg <- function(
     summary_z = summaryZ, # nolint: object_usage_linter.
     n_vec = Nvec, # nolint: object_usage_linter.
     plinkLD = plinkLD, # nolint: object_usage_linter.
-    func_index = funcIndex # nolint: object_usage_linter.
+    func_index = funcIndex, # nolint: object_usage_linter.
+    debug_output = debug_output
   )
 
   return(output)
@@ -21,21 +22,22 @@ test_pkg <- function(
 #' DEBUG VERSION
 #' @export
 debug_test_pkg <- function(
+  summaryZ,
+  funcIndex,
   debug_output = FALSE,
   sub_tuning = 1,
-  lambda_vec_func_limit_len = c(1.5, 1)
+  lambda_vec_limit_len = c(1.5, 1)
 ) {
-  data("summaryZ")
   data("Nvec")
   data("plinkLD")
-  data("funcIndex")
   output <- gsfPEN_R(
     summary_z = summaryZ, # nolint: object_usage_linter.
     n_vec = Nvec, # nolint: object_usage_linter.
     plinkLD = plinkLD, # nolint: object_usage_linter.
     func_index = funcIndex, # nolint: object_usage_linter.
     sub_tuning = sub_tuning,
-    lambda_vec_func_limit_len = lambda_vec_func_limit_len
+    lambda_vec_limit_len = lambda_vec_limit_len,
+    debug_output = debug_output
   )
 
   return(output)
@@ -56,12 +58,12 @@ gsfPEN_R <- function(
     p_threshold = NULL,
     p_threshold_params = c(0.5, 10^-4, 4),
     tau_factor = c(1 / 25, 1, 3),
-    llim_length = 4,
+    len_lim_lambda = 4,
     sub_tuning = 4,
     lim_lambda = c(0.5, 0.9),
     len_lambda = 4,
-    lambda_vec_func = NULL,
-    lambda_vec_func_limit_len = c(1.5, 3),
+    lambda_vec = NULL,
+    lambda_vec_limit_len = c(1.5, 3),
     df_max = NULL,
     debug_output = FALSE
 ) {
@@ -95,36 +97,35 @@ gsfPEN_R <- function(
     p_threshold <- seq(p_threshold_params[1], p_threshold_params[2], length.out = p_threshold_params[3])
   }
 
-  if (any(c(is.null(tuning_matrix), is.null(lambda_vec_func)))) {
+  if (any(c(is.null(tuning_matrix), is.null(lambda_vec)))) {
     median_val <- median(apply(abs(summary_betas), 1, sum), na.rm = TRUE)
     tau_vec <- sort(median_val * tau_factor)
     lim_lambda <- quantile(abs(summary_z[, 1]), lim_lambda)
 
     output <- Tuning_setup_group_func(
-      lambda_vec_func,
-      lambda_vec_func_limit_len,
+      lambda_vec,
+      lambda_vec_limit_len,
       p_threshold,
       num_func,
       tau_vec,
       sub_tuning,
       lim_lambda,
       len_lambda,
-      llim_length,
+      len_lim_lambda,
       median_val
     )
 
     func_lambda <- output$func_lambda
-    lambda_vec_func <- output$lambda_vec_func
+    lambda_vec <- output$lambda_vec
     tuning_matrix <- output$tuning_matrix
 
     rm(output)
   } else {
-    func_lambda0 <- permutations( # nolint: object_usage_linter.
-      length(lambda_vec_func),
+    func_lambda <- permutations( # nolint: object_usage_linter.
+      length(lambda_vec),
       num_func,
       repeats.allowed = TRUE
-    )
-    func_lambda <- func_lambda0 - 1
+    ) - 1
   }
 
   beta_index <- c(seq_len(nrow(summary_betas))) - 1
@@ -249,7 +250,7 @@ gsfPEN_R <- function(
     tuning_matrix,
     lambda0_vec,
     z_matrix,
-    lambda_vec_func,
+    lambda_vec,
     func_lambda,
     Ifunc_SNP,
     dims,
@@ -275,6 +276,7 @@ gsfPEN_R <- function(
 
   # Remove the tuning combinations that did not converge (correspons to -2 in num_iter_vec)
   if (!debug_output) {
+    print("Removing tuning combinations that did not converge.")
     converge_index <- which(num_iter_vec > 0)
     num_iter_vec <- num_iter_vec[converge_index]
     beta_matrix <- beta_matrix[converge_index, ]

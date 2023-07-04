@@ -271,9 +271,6 @@ Rcpp::List gsfPEN_cpp(
               temp_b_matrix(j, q) = joint_b_matrix(j, q);
               sum_betas(j) += fabs(joint_b_matrix(j, q));
             }
-            if (tuning_index == 9) {
-              if (sum_betas(j) != 0) printf("sum_betas(%d)=%e\n", j, sum_betas(j));
-            }
           }
 
           if (num_indices != 0)
