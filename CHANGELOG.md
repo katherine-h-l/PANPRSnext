@@ -1,5 +1,11 @@
 # Changes
 
+- Fixed bug in the C++ code that was causing the results to be incorrect. Zmatrix was not being initialized correctly.
+  - Modified files: PANPRS.cpp
+  - How error was found: Took a subset of the initial summaryZ and funcIndex data. Reduced the number of tuning parameters as well so that the output would be printable / readable. Inserted various print statements through the loops in order to determine where values were different accross the new and old code. 
+  - Description: Zmatrix needed to be converted from data frame to a matrix to be passed to C++. My previous implementation was incorrect which has now been fixed. Additionally, there was a bug in the R Internal functions that was causing the lambda vectors to be initialized incorrectly. This has also been fixed.
+  - Caveat: The code now matches the previous version of the code in terms of output. Now that all bugs have been fixed though, the new code is now slightly slower (by ~25%) than the previous version. However, we now have everything working with Armadillo and can move to optimization.
+
 - Fixed calculations in new version of the code. Issue was within one of the loops in the C++ code.
   - Modified files: PANPRS.cpp
   - How error was found: Took a subset of the initial summaryZ and funcIndex data. Reduced the number of tuning parameters as well so that the output would be printable / readable. Inserted various print statements through the loops in order to determine where values were different accross the new and old code. 
