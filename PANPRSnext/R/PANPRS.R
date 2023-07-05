@@ -182,15 +182,15 @@ gsfPEN_R <- function(
   }
 
 
-  z_matrix <- matrix(1 - unlist(func_index), nrow = nrow(func_index), ncol = ncol(func_index), byrow = TRUE)
-  rownames(z_matrix) <- rownames(func_index)
+  z_matrix <- as.matrix(1 - func_index)
+  # z_matrix <- matrix(1 - unlist(func_index), nrow = nrow(func_index), ncol = ncol(func_index), byrow = TRUE)
+  # rownames(z_matrix) <- rownames(func_index)
 
   sum_func_index <- apply(z_matrix, 1, sum)
   Ifunc_SNP <- rep(0, P)
   Ifunc_SNP[which(sum_func_index != 0)] <- 1
 
   lambda0_vec <- abs(-qnorm(p_threshold / 2))
-
 
   nrow_index_matrix <- nrow(index_matrix)
   ncol_index_matrix <- ncol(index_matrix)
@@ -237,6 +237,7 @@ gsfPEN_R <- function(
     length(p_threshold),    # 6
     num_indices             # 7
   )
+
 
   print(paste0("Number of total tuning combinations = ", nrow_all_tuning_matrix))
 

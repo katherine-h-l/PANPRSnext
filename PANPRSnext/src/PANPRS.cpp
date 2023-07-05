@@ -169,14 +169,27 @@ Rcpp::List gsfPEN_cpp(
                 if (summary_betas(j, q) != 0.0)
                 {
                   double bj_bar = summary_betas(j, q);
+                  int i = index_matrix(p, 1);
+
                   for (int i = index_matrix(p, 1); i < index_matrix(p, 2) + 1; i++)
                   {
                     bj_bar -= ld_vec(i) * joint_b_matrix(ld_J(i), q);
                   }
+                  // if (tuning_index == 18 && n == 1) {
+                  //   printf("q: %d, i: %d, ld_vec(i): %f\n", q, i, ld_vec(i), joint_b_matrix(ld_J(i), q));
+                  //   printf("ld_J(i): %d, joint_b_matrix(ld_J(i), q): %f\n", ld_J(i), joint_b_matrix(ld_J(i), q));
+                  //   printf("bj_bar: %f\n", bj_bar);
+                  // }
 
+                  // if (tuning_index == 18 && n == 1) printf("lambda1: %f\n", lambda1);
                   double threshold;
                   if (Q == 1) threshold = lambda1;
                   else threshold = lambda1 + lambda2 / (sum_betas(j) + tau2);
+
+                  // if (tuning_index == 18 && n == 1) {
+                  //   printf("threshold: %f\n", threshold);
+                  //   printf("sum_betas(j): %f\n", sum_betas(j));
+                  // }
 
                   if (fabs(bj_bar) > upper_val)
                   {
