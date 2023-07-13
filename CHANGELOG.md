@@ -1,5 +1,8 @@
 # Changes
 
+- Package compilation has been test successfully tested on Linux (Manjaro) and Windows 11.
+  - The package fails to compile on Mac OS using Apple M2 Arm chip due to failure to link to fortran compiler. I suspect this is an issue with the clang compiler. To be resolved still.
+
 - TO DO:
   - Have yet to leverage sparse matrices. We already have decreased memory usage just from transitioning to Armadillo and cleaning up some memory allocations. Sparse matrices should be able to further reduce memory usage.
     - What matrices should be treated as sparse?
