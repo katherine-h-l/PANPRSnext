@@ -1,5 +1,18 @@
 # Changes
 
+- TO DO:
+  - Have yet to leverage sparse matrices. We already have decreased memory usage just from transitioning to Armadillo and cleaning up some memory allocations. Sparse matrices should be able to further reduce memory usage.
+    - What matrices should be treated as sparse?
+  - Further reduce the amount of temporary allocations. Try and find a way to elimate the temporary matrices entirely.
+  - Implement parallelization using OpenMP
+    - What parts of the code should be parallelized?
+  - Attempt to convert loops to a branchless style. This should reduce the overhead and increase performance of the for loops even further.
+
+- Ran some memory profiling on the code. The new version of the code uses approximately ~17% less memory already.
+  - Modified files: Test.Rmd
+  - Output files: Test.html new.html old.html
+  - Description: Files show when and how much memory is allocated in each part of the gsfpen function calls.
+
 - Fixed bug in the C++ code that was causing the results to be incorrect. Zmatrix was not being initialized correctly.
   - Modified files: PANPRS.cpp
   - How error was found: Took a subset of the initial summaryZ and funcIndex data. Reduced the number of tuning parameters as well so that the output would be printable / readable. Inserted various print statements through the loops in order to determine where values were different accross the new and old code. 
