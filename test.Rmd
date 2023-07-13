@@ -7,7 +7,7 @@ output:
 
 # Load Memory profvis
 
-```{r}
+```{r include = FALSE}
 
 library(profvis)
 
@@ -15,9 +15,7 @@ library(profvis)
 
 # Old Code
 
-## Compile and load
-
-```{r}
+```{r include = FALSE}
 
 install.packages(
     "~/Desktop/PANPRS-next",
@@ -61,10 +59,7 @@ print(mem_old)
 ```
 
 # New Code
-
-## Compile and load
-
-```{r}
+```{r include = FALSE}
 
 Rcpp::compileAttributes("~/Desktop/PANPRS-next-Katya/PANPRSnext")
 devtools::load_all("~/Desktop/PANPRS-next-Katya/PANPRSnext")
