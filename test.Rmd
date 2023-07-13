@@ -1,6 +1,8 @@
 ---
 title: "Test"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 # Load Memory profvis
