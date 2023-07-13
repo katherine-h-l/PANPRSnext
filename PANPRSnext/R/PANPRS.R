@@ -28,8 +28,10 @@ debug_test_pkg <- function(
   sub_tuning = 1,
   lambda_vec_limit_len = c(1.5, 1)
 ) {
+  data("summaryZ")
   data("Nvec")
   data("plinkLD")
+  data("funcIndex")
   output <- gsfPEN_R(
     summary_z = summaryZ, # nolint: object_usage_linter.
     n_vec = Nvec, # nolint: object_usage_linter.
@@ -67,7 +69,6 @@ gsfPEN_R <- function(
     df_max = NULL,
     debug_output = FALSE
 ) {
-
   time <- proc.time()
 
   if (z_scale != 1) {

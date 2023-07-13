@@ -1,0 +1,105 @@
+---
+title: "Test"
+output: html_notebook
+---
+
+# Load Memory profvis
+
+```{r}
+
+library(profvis)
+
+```
+
+# Old Code
+
+## Compile and load
+
+```{r}
+
+install.packages(
+    "~/Desktop/PANPRS-next",
+    type = "source",
+    repos = NULL,
+    force = TRUE
+)
+
+library(devtools)
+load_all("~/Desktop/PANPRS-next/")
+
+```
+
+## Test
+
+```{r}
+
+data("summaryZ")
+data("Nvec")
+data("plinkLD")
+data("funcIndex")
+
+st <- 4
+lvfll <- c(1.5, 3)
+
+mem_old <- profvis({
+  old <- gsfPEN(
+      summaryZ = summaryZ,
+      Nvec = Nvec,
+      plinkLD = plinkLD,
+      funcIndex = funcIndex,
+      numfunc = ncol(funcIndex),
+      subtuning = st,
+      lambdavec_func_limit_len = lvfll,
+      outputAll = 0
+  )
+})
+
+print(mem_old)
+
+```
+
+# New Code
+
+## Compile and load
+
+```{r}
+
+Rcpp::compileAttributes("~/Desktop/PANPRS-next-Katya/PANPRSnext")
+devtools::load_all("~/Desktop/PANPRS-next-Katya/PANPRSnext")
+
+```
+
+## Test
+
+```{r}
+
+st <- 4
+lvfll <- c(1.5, 3)
+
+mem_new <- profvis({
+  new <- debug_test_pkg(
+    summaryZ = summaryZ,
+    funcIndex = funcIndex,
+    sub_tuning = st,
+    lambda_vec_limit_len = lvfll,
+    debug_output = FALSE
+  )
+})
+
+print(mem_new)
+
+```
+# Compare memory usage
+
+```{r}
+
+
+mem_usage_old = 2632.1 # MB
+mem_usage_new = 2166.1 # MB
+
+perc_less = 100 * (mem_usage_old - mem_usage_new) / mem_usage_old
+
+print(paste0(perc_less, "% less memory used"))
+
+```
+
