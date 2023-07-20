@@ -7,17 +7,13 @@
 gsfPEN_cpp(
   summary_betas,
   ld_J,
-  num_iter_vec,
   index_matrix,
   index_J,
   ld_vec,
-  upper_val,
   SD_vec,
   tuning_matrix,
-  beta_matrix,
   lambda0_vec,
   z_matrix,
-  all_tuning_matrix,
   lambda_vec_func,
   func_lambda,
   Ifunc_SNP,
@@ -26,41 +22,33 @@ gsfPEN_cpp(
 )
 }
 \arguments{
-\item{summary_betas}{matrix}
+\item{summary_betas}{matrix of summary statistics}
 
-\item{ld_J}{vector}
+\item{ld_J}{vector of indices of SNPs in LD with the current SNP}
 
-\item{num_iter_vec}{vector}
+\item{index_matrix}{matrix of indices of SNPs in LD with the current SNP}
 
-\item{index_matrix}{matrix}
+\item{index_J}{vector of indices of SNPs in LD with the current SNP}
 
-\item{index_J}{vector}
+\item{ld_vec}{vector of LD values}
 
-\item{ld_vec}{vector}
+\item{SD_vec}{matrix of SD values}
 
-\item{upper_val}{double}
+\item{tuning_matrix}{matrix of tuning parameters}
 
-\item{SD_vec}{matrix}
+\item{lambda0_vec}{vector of lambda0 values}
 
-\item{tuning_matrix}{matrix}
+\item{z_matrix}{matrix of z values}
 
-\item{beta_matrix}{matrix}
+\item{lambda_vec_func}{vector of lambda values}
 
-\item{lambda0_vec}{vector}
+\item{func_lambda}{matrix of lambda values}
 
-\item{z_matrix}{matrix}
+\item{Ifunc_SNP}{vector of indices of SNPs in LD with the current SNP}
 
-\item{all_tuning_matrix}{matrix}
+\item{dims}{vector of dimensions}
 
-\item{lambda_vec_func}{vector}
-
-\item{func_lambda}{matrix}
-
-\item{Ifunc_SNP}{vector}
-
-\item{dims}{vector}
-
-\item{params}{vector}
+\item{params}{vector of parameters}
 }
 \description{
 Main CPP function

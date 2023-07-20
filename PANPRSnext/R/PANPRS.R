@@ -1,8 +1,7 @@
 #' Run the package on the provided data set
 #' @export
 test_pkg <- function(
-  debug_output = FALSE
-) {
+    debug_output = FALSE) {
   data("summaryZ")
   data("Nvec")
   data("plinkLD")
@@ -22,12 +21,11 @@ test_pkg <- function(
 #' DEBUG VERSION
 #' @export
 debug_test_pkg <- function(
-  summaryZ,
-  funcIndex,
-  debug_output = FALSE,
-  sub_tuning = 1,
-  lambda_vec_limit_len = c(1.5, 1)
-) {
+    summaryZ,
+    funcIndex,
+    debug_output = FALSE,
+    sub_tuning = 1,
+    lambda_vec_limit_len = c(1.5, 1)) {
   data("summaryZ")
   data("Nvec")
   data("plinkLD")
@@ -67,8 +65,7 @@ gsfPEN_R <- function(
     lambda_vec = NULL,
     lambda_vec_limit_len = c(1.5, 3),
     df_max = NULL,
-    debug_output = FALSE
-) {
+    debug_output = FALSE) {
   time <- proc.time()
 
   if (z_scale != 1) {
@@ -212,31 +209,31 @@ gsfPEN_R <- function(
   ncol_beta_matrix <- P * Q
 
   dims <- c(
-    num_SNP,                # 1
-    P,                      # 2
-    Q,                      # 3
-    nrow_index_matrix,      # 4
-    ncol_index_matrix,      # 5
-    nrow_z_matrix,          # 6
-    ncol_z_matrix,          # 7
-    nrow_func_lambda,       # 8
-    ncol_func_lambda,       # 9
-    nrow_tuning_matrix,     # 10
-    ncol_tuning_matrix,     # 11
+    num_SNP, # 1
+    P, # 2
+    Q, # 3
+    nrow_index_matrix, # 4
+    ncol_index_matrix, # 5
+    nrow_z_matrix, # 6
+    ncol_z_matrix, # 7
+    nrow_func_lambda, # 8
+    ncol_func_lambda, # 9
+    nrow_tuning_matrix, # 10
+    ncol_tuning_matrix, # 11
     nrow_all_tuning_matrix, # 12 == num_tuning
     ncol_all_tuning_matrix, # 13
-    nrow_beta_matrix,       # 14
-    ncol_beta_matrix        # 15
+    nrow_beta_matrix, # 14
+    ncol_beta_matrix # 15
   )
 
   params <- c(
-    upper_val,              # 1
-    n_iter,                 # 2
-    breaking,               # 3
-    z_scale,                # 4
-    df_max,                 # 5
-    length(p_threshold),    # 6
-    num_indices             # 7
+    upper_val, # 1
+    n_iter, # 2
+    breaking, # 3
+    z_scale, # 4
+    df_max, # 5
+    length(p_threshold), # 6
+    num_indices # 7
   )
 
 

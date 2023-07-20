@@ -6,21 +6,21 @@
 #include "PANPRS.hpp"
 
 Rcpp::List gsfPEN_cpp(
-  arma::Mat<double> summary_betas,
-  arma::Col<int> ld_J,
-  arma::Mat<int> index_matrix,
-  arma::Col<int> index_J,
-  arma::Col<double> ld_vec,
-  arma::Mat<double> SD_vec,
-  arma::Mat<double> tuning_matrix,
-  arma::Col<double> lambda0_vec,
-  arma::Mat<double> z_matrix,
-  arma::Col<double> lambda_vec,
-  arma::Mat<int> func_lambda,
-  arma::Col<int> Ifunc_SNP,
-  arma::Col<int> dims,
-  arma::Col<double> params
-) {
+    arma::Mat<double> summary_betas,
+    arma::Col<int> ld_J,
+    arma::Mat<int> index_matrix,
+    arma::Col<int> index_J,
+    arma::Col<double> ld_vec,
+    arma::Mat<double> SD_vec,
+    arma::Mat<double> tuning_matrix,
+    arma::Col<double> lambda0_vec,
+    arma::Mat<double> z_matrix,
+    arma::Col<double> lambda_vec,
+    arma::Mat<int> func_lambda,
+    arma::Col<int> Ifunc_SNP,
+    arma::Col<int> dims,
+    arma::Col<double> params)
+{
   int num_SNP = dims(0);
 
   int P = dims(1);
@@ -57,17 +57,19 @@ Rcpp::List gsfPEN_cpp(
   arma::Col<int> num_iter_vec(nrow_all_tuning_matrix, arma::fill::zeros);
   arma::Col<double> temp_lambda_vec(ncol_func_lambda, arma::fill::zeros);
   arma::Col<double> sum_betas(P, arma::fill::zeros);
-  
+
   arma::Mat<double> all_tuning_matrix(nrow_all_tuning_matrix, ncol_all_tuning_matrix, arma::fill::zeros);
-  arma::Mat<double> beta_matrix(nrow_beta_matrix, ncol_beta_matrix, arma::fill::zeros);
+  // arma::Mat<double> beta_matrix(nrow_beta_matrix, ncol_beta_matrix, arma::fill::zeros);
+  arma::SpMat<double> beta_matrix(nrow_beta_matrix, ncol_beta_matrix);
   arma::Mat<double> joint_b_matrix(P, Q, arma::fill::zeros);
   arma::Mat<double> temp_b_matrix(P, Q, arma::fill::zeros);
   arma::Mat<int> skip(P, Q, arma::fill::zeros);
-  
+
   GetRNGstate();
 
   // len_p_Thresold = 4
   // By default, p.Threshold = seq(0.5, 10^-4, length.out=4)
+  int max_tuning_index = nrow_all_tuning_matrix * nrow_func_lambda * nrow_tuning_matrix;
   int tuning_index = -1;
   for (int threshold_index = 0; threshold_index < leng_p_threshold; threshold_index++)
   {
@@ -89,7 +91,7 @@ Rcpp::List gsfPEN_cpp(
 
         double lambda2 = tuning_matrix(tun_idx_2, 2);
         all_tuning_matrix(tuning_index, ncol_all_tuning_matrix - 2) = lambda2;
-        
+
         double tau2 = tuning_matrix(tun_idx_2, 3);
         all_tuning_matrix(tuning_index, ncol_all_tuning_matrix - 1) = tau2;
 
@@ -120,15 +122,21 @@ Rcpp::List gsfPEN_cpp(
                 if (bj_bar != 0.0)
                 {
                   double threshold;
-                  if (Q == 1) threshold = lambda1;
-                  else threshold = lambda1 + lambda2 / (sum_betas(j) + tau2);
+                  if (Q == 1)
+                    threshold = lambda1;
+                  else
+                    threshold = lambda1 + lambda2 / (sum_betas(j) + tau2);
 
                   // SDvec is 1/sqrt(sample size of curr. GWA)
-                  if (z_scale == 1) threshold *= SD_vec(j, q);
+                  if (z_scale == 1)
+                    threshold *= SD_vec(j, q);
 
-                  if (bj_bar > threshold) joint_b_matrix(j, q) = bj_bar - threshold;
-                  else if (bj_bar < -threshold) joint_b_matrix(j, q) = bj_bar + threshold;
-                  else joint_b_matrix(j, q) = 0.0;
+                  if (bj_bar > threshold)
+                    joint_b_matrix(j, q) = bj_bar - threshold;
+                  else if (bj_bar < -threshold)
+                    joint_b_matrix(j, q) = bj_bar + threshold;
+                  else
+                    joint_b_matrix(j, q) = 0.0;
                 }
 
                 if (summary_betas(j, q) * joint_b_matrix(j, q) < 0)
@@ -183,8 +191,10 @@ Rcpp::List gsfPEN_cpp(
 
                   // if (tuning_index == 18 && n == 1) printf("lambda1: %f\n", lambda1);
                   double threshold;
-                  if (Q == 1) threshold = lambda1;
-                  else threshold = lambda1 + lambda2 / (sum_betas(j) + tau2);
+                  if (Q == 1)
+                    threshold = lambda1;
+                  else
+                    threshold = lambda1 + lambda2 / (sum_betas(j) + tau2);
 
                   // if (tuning_index == 18 && n == 1) {
                   //   printf("threshold: %f\n", threshold);
@@ -205,11 +215,15 @@ Rcpp::List gsfPEN_cpp(
                     }
                   }
 
-                  if (z_scale == 1) threshold *= SD_vec(j, q);
+                  if (z_scale == 1)
+                    threshold *= SD_vec(j, q);
 
-                  if (bj_bar > threshold) joint_b_matrix(j, q) = bj_bar - threshold;
-                  else if (bj_bar < -threshold) joint_b_matrix(j, q) = bj_bar + threshold;
-                  else joint_b_matrix(j, q) = 0.0;
+                  if (bj_bar > threshold)
+                    joint_b_matrix(j, q) = bj_bar - threshold;
+                  else if (bj_bar < -threshold)
+                    joint_b_matrix(j, q) = bj_bar + threshold;
+                  else
+                    joint_b_matrix(j, q) = 0.0;
                 }
                 else
                 {
@@ -230,18 +244,19 @@ Rcpp::List gsfPEN_cpp(
           {
             for (int q = 0; q < Q; q++)
             {
-              if (fabs(joint_b_matrix(p, q)) > upper_val) skip(p, q) = 1;
+              if (fabs(joint_b_matrix(p, q)) > upper_val)
+                skip(p, q) = 1;
 
               if (q == 0)
               {
-                if (fabs(joint_b_matrix(p, q)) != 0) df_q++;
+                if (fabs(joint_b_matrix(p, q)) != 0)
+                  df_q++;
 
                 if (df_q > df_max)
                 {
                   converges = false;
                   break;
                 }
-
               }
 
               if (fabs(temp_b_matrix(p, q) - joint_b_matrix(p, q)) > epsilon)
@@ -308,8 +323,7 @@ Rcpp::List gsfPEN_cpp(
   PutRNGstate();
 
   return Rcpp::List::create(
-    Rcpp::Named("beta_matrix") = beta_matrix,
-    Rcpp::Named("num_iter_vec") = num_iter_vec,
-    Rcpp::Named("all_tuning_matrix") = all_tuning_matrix
-  );
+      Rcpp::Named("beta_matrix") = beta_matrix,
+      Rcpp::Named("num_iter_vec") = num_iter_vec,
+      Rcpp::Named("all_tuning_matrix") = all_tuning_matrix);
 }

@@ -14,17 +14,17 @@ gsfPEN_R(
   breaking = 1,
   z_scale = 1,
   tuning_matrix = NULL,
-  p.Threshold = NULL,
-  p.Threshold_params = c(0.5, 10^-4, 4),
+  p_threshold = NULL,
+  p_threshold_params = c(0.5, 10^-4, 4),
   tau_factor = c(1/25, 1, 3),
-  llim_length = 4,
+  len_lim_lambda = 4,
   sub_tuning = 4,
   lim_lambda = c(0.5, 0.9),
   len_lambda = 4,
-  lambda_vec_func = NULL,
-  lambda_vec_func_limit_len = c(1.5, 3),
+  lambda_vec = NULL,
+  lambda_vec_limit_len = c(1.5, 3),
   df_max = NULL,
-  debug_output = 0
+  debug_output = FALSE
 )
 }
 \description{

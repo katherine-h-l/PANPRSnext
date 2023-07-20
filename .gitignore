@@ -1,3 +1,9 @@
+# New Data Set
+NewDataSet
+
+# Raw Rmd files
+*.Rmd
+
 # DS_Store files
 *.DS_Store
 

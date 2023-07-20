@@ -4,7 +4,7 @@
 \alias{test_pkg}
 \title{Run the package on the provided data set}
 \usage{
-test_pkg()
+test_pkg(debug_output = FALSE)
 }
 \description{
 Run the package on the provided data set
