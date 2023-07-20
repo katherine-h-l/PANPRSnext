@@ -1,5 +1,10 @@
 # Changes
 
+-   Increased performance by elimating unessary overwrites to the beta matrix
+
+    -   Modified files: PANPRS.cpp
+    -   Description: Simply adding an if statement on line 283 to check if we are setting an element of a sparse matrix to 0 (which has no effect) increased performance by up to 30%.
+
 -   Ran additional memory profiling on larger data sets with the new sparse matrix implementation.
 
     -   New directory: MemoryProfiling
