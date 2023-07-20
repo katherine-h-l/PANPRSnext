@@ -1,5 +1,6 @@
 # New Data Set
-NewDataSet
+NewDataSet/*.gz
+NewDataSet/*.RData
 
 # Raw Rmd files
 *.Rmd
