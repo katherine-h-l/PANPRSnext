@@ -280,7 +280,8 @@ Rcpp::List gsfPEN_cpp(
             {
               for (int p = 0; p < P; p++)
               {
-                beta_matrix(tuning_index, beta_idx) = joint_b_matrix(p, q);
+                if (joint_b_matrix(p, q) != 0.0)
+                  beta_matrix(tuning_index, beta_idx) = joint_b_matrix(p, q);
                 beta_idx++;
               }
             }
