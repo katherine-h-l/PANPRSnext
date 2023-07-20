@@ -1627,7 +1627,7 @@ Sets</h1>
 
 <pre class="r"><code>set.seed(1)
 
-subset_num_samples = 1e4
+subset_num_samples = 2e4
 subset_samples = sample(nrow_summary_z, subset_num_samples)
 
 subset_summary_z &lt;- summary_z[subset_samples,]
@@ -1653,7 +1653,7 @@ full_func_index &lt;- func_index[full_samples, ]</code></pre>
   )
 })</code></pre>
 <pre><code>## [1] &quot;Number of total tuning combinations = 1296&quot;
-## [1] &quot;Time elapsed: 10.895 seconds&quot;</code></pre>
+## [1] &quot;Time elapsed: 13.848 seconds&quot;</code></pre>
 <pre class="r"><code>print(subset_mem_old)</code></pre>
 <pre class="r"><code>subset_mem_new &lt;- profvis({
   subset_output_new &lt;- PANPRSnext::gsfPEN_R(
@@ -1665,12 +1665,12 @@ full_func_index &lt;- func_index[full_samples, ]</code></pre>
 })</code></pre>
 <pre><code>## [1] &quot;Number of total tuning combinations = 1296&quot;
 ## [1] &quot;Removing tuning combinations that did not converge.&quot;
-## [1] &quot;Time elapsed: 33.558 seconds&quot;</code></pre>
+## [1] &quot;Time elapsed: 38.087 seconds&quot;</code></pre>
 <pre class="r"><code>print(subset_mem_new)</code></pre>
 <div id="compare-memory-usage" class="section level3">
 <h3>Compare memory usage</h3>
-<pre class="r"><code>subset_time_old = 11.027 # s
-subset_time_new = 33.516 # s
+<pre class="r"><code>subset_time_old = 13.716 # s
+subset_time_new = 36.18 # s
 
 subset_time_new_vs_old = 100 * (subset_time_old - subset_time_new) / subset_time_old
 
@@ -1680,9 +1680,9 @@ print(paste0(
   if (subset_time_new_vs_old &lt; 0) &quot;more &quot; else &quot;less &quot;,
   &quot;time taken after switching to armadillo&quot;
 ))</code></pre>
-<pre><code>## [1] &quot;203.944862609957% more time taken after switching to armadillo&quot;</code></pre>
-<pre class="r"><code>subset_mem_usage_old = 4456.1 # MB
-subset_mem_usage_new = 3545.3 # MB
+<pre><code>## [1] &quot;163.779527559055% more time taken after switching to armadillo&quot;</code></pre>
+<pre class="r"><code>subset_mem_usage_old = 6150.4 # MB
+subset_mem_usage_new = 4539.0 # MB
 
 subset_mem_run_new_vs_old = 100 * (subset_mem_usage_old - subset_mem_usage_new) / subset_mem_usage_old
 
@@ -1692,7 +1692,7 @@ print(paste0(
   if (subset_mem_run_new_vs_old &lt; 0) &quot;more &quot; else &quot;less &quot;,
   &quot;memory used while running after switching to armadillo&quot;
 ))</code></pre>
-<pre><code>## [1] &quot;20.4393976795853% less memory used while running after switching to armadillo&quot;</code></pre>
+<pre><code>## [1] &quot;26.1999219562955% less memory used while running after switching to armadillo&quot;</code></pre>
 <pre class="r"><code>subset_mem_output_old = object.size(subset_output_old)
 subset_mem_output_new = object.size(subset_output_new)
 
@@ -1704,7 +1704,7 @@ print(paste0(
   if (subset_mem_output_new_vs_old &lt; 0) &quot;more &quot; else &quot;less &quot;,
   &quot;memory used for output after switching to armadillo&quot;
 ))</code></pre>
-<pre><code>## [1] &quot;93.6125106301504% less memory used for output after switching to armadillo&quot;</code></pre>
+<pre><code>## [1] &quot;93.70611807981% less memory used for output after switching to armadillo&quot;</code></pre>
 </div>
 </div>
 <div id="test-with-full-data-set" class="section level2">
@@ -1719,7 +1719,7 @@ print(paste0(
   )
 })</code></pre>
 <pre><code>## [1] &quot;Number of total tuning combinations = 1296&quot;
-## [1] &quot;Time elapsed: 66.703 seconds&quot;</code></pre>
+## [1] &quot;Time elapsed: 63.232 seconds&quot;</code></pre>
 <pre class="r"><code>print(mem_old)</code></pre>
 <pre class="r"><code>mem_new &lt;- profvis({
   output_new &lt;- PANPRSnext::gsfPEN_R(
@@ -1731,12 +1731,13 @@ print(paste0(
 })</code></pre>
 <pre><code>## [1] &quot;Number of total tuning combinations = 1296&quot;
 ## [1] &quot;Removing tuning combinations that did not converge.&quot;
-## [1] &quot;Time elapsed: 520.204 seconds&quot;</code></pre>
+## [1] &quot;Time elapsed: 363.897 seconds&quot;</code></pre>
 <pre class="r"><code>print(mem_new)</code></pre>
 <div id="compare-memory-usage-1" class="section level3">
 <h3>Compare memory usage</h3>
-<pre class="r"><code>time_old = 71.213 # s
+<pre class="r"><code>time_old = 64.175 # s
 time_new = 540.218 # s
+time_new_fix = 383.771 # s
 
 time_new_vs_old = 100 * (time_old - time_new) / time_old
 
@@ -1746,9 +1747,18 @@ print(paste0(
   if (time_new_vs_old &lt; 0) &quot;more &quot; else &quot;less &quot;,
   &quot;time taken after switching to armadillo&quot;
 ))</code></pre>
-<pre><code>## [1] &quot;658.594638619353% more time taken after switching to armadillo&quot;</code></pre>
-<pre class="r"><code>mem_usage_old = 19615.2 # MB
-mem_usage_new = 11949.3 # MB
+<pre><code>## [1] &quot;741.788858589793% more time taken after switching to armadillo&quot;</code></pre>
+<pre class="r"><code>time_fix_vs_new = 100 * (time_new - time_new_fix) / time_new
+
+print(paste0(
+  abs(time_fix_vs_new),
+  &quot;% &quot;,
+  if (time_fix_vs_new &lt; 0) &quot;more &quot; else &quot;less &quot;,
+  &quot;time taken after fixing beta_matrix accessing&quot;
+))</code></pre>
+<pre><code>## [1] &quot;28.9599754173315% less time taken after fixing beta_matrix accessing&quot;</code></pre>
+<pre class="r"><code>mem_usage_old = 20672.2 # MB
+mem_usage_new = 11947.3 # MB
 
 mem_run_new_vs_old = 100 * (mem_usage_old - mem_usage_new) / mem_usage_old
 
@@ -1758,7 +1768,7 @@ print(paste0(
   if (mem_run_new_vs_old &lt; 0) &quot;more &quot; else &quot;less &quot;,
   &quot;memory used while running after switching to armadillo&quot;
 ))</code></pre>
-<pre><code>## [1] &quot;39.0814266487214% less memory used while running after switching to armadillo&quot;</code></pre>
+<pre><code>## [1] &quot;42.2059577596966% less memory used while running after switching to armadillo&quot;</code></pre>
 <pre class="r"><code>mem_output_old = object.size(output_old)
 mem_output_new = object.size(output_new)
 
@@ -1770,7 +1780,7 @@ print(paste0(
   if (mem_output_new_vs_old &lt; 0) &quot;more &quot; else &quot;less &quot;,
   &quot;memory used for output after switching to armadillo&quot;
 ))</code></pre>
-<pre><code>## [1] &quot;93.5908699928145% less memory used for output after switching to armadillo&quot;</code></pre>
+<pre><code>## [1] &quot;93.6005116989205% less memory used for output after switching to armadillo&quot;</code></pre>
 </div>
 </div>
 
