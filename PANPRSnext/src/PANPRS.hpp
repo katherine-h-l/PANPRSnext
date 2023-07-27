@@ -19,18 +19,17 @@
 //' @param params vector of parameters
 // [[Rcpp::export]]
 Rcpp::List gsfPEN_cpp(
-  arma::Mat<double> summary_betas,
-  arma::Col<int> ld_J,
-  arma::Mat<int> index_matrix,
-  arma::Col<int> index_J,
-  arma::Col<double> ld_vec,
-  arma::Mat<double> SD_vec,
-  arma::Mat<double> tuning_matrix,
-  arma::Col<double> lambda0_vec,
-  arma::Mat<double> z_matrix,
-  arma::Col<double> lambda_vec_func,
-  arma::Mat<int> func_lambda,
-  arma::Col<int> Ifunc_SNP,
-  arma::Col<int> dims,
-  arma::Col<double> params
-);
+    arma::Mat<double> summary_betas,
+    arma::Col<int> ld_J,
+    arma::Mat<int> index_matrix,
+    arma::Col<int> index_J,
+    arma::Col<double> ld_vec,
+    arma::Mat<double> SD_vec,
+    arma::Mat<double> tuning_matrix,
+    arma::Col<double> lambda0_vec,
+    arma::Mat<double> z_matrix,
+    arma::Col<double> lambda_vec_func,
+    arma::Mat<int> func_lambda,
+    arma::Col<int> Ifunc_SNP,
+    arma::Col<int> dims,
+    arma::Col<double> params);

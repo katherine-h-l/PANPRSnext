@@ -1,3 +1,6 @@
+// Prevent bounds checking for increased performance
+#define ARMA_NO_DEBUG 1
+
 #include <RcppArmadillo.h>
 
 #include <stdio.h>
@@ -67,9 +70,6 @@ Rcpp::List gsfPEN_cpp(
 
   GetRNGstate();
 
-  // len_p_Thresold = 4
-  // By default, p.Threshold = seq(0.5, 10^-4, length.out=4)
-  int max_tuning_index = nrow_all_tuning_matrix * nrow_func_lambda * nrow_tuning_matrix;
   int tuning_index = -1;
   for (int threshold_index = 0; threshold_index < leng_p_threshold; threshold_index++)
   {
@@ -85,7 +85,6 @@ Rcpp::List gsfPEN_cpp(
           all_tuning_matrix(tuning_index, func_index + 1) = temp_lambda_vec(func_index);
         }
 
-        // lambda0vec = abs(-qnorm(p.Threshold/2)) -> 0.67 0.96 1.38 3.89
         double lambda0 = lambda0_vec(threshold_index);
         all_tuning_matrix(tuning_index, 0) = lambda0;
 
@@ -98,77 +97,44 @@ Rcpp::List gsfPEN_cpp(
         bool converges = true;
         for (int n = 1; n <= num_iter; n++)
         {
-          // This is non zero when there are Z-scores (summary_betas) that are not in the linkage data (LdJ)
           // Realistically, this is always 0 given the R interfaces only selects those that are present in both
           if (num_indices != 0)
           {
-            // num_indices = 3, 1: SNP_A, 2: SNP_B, 3: R
             for (int i = 0; i < num_indices; i++)
             {
               int j = index_J(i);
-              double lambda1 = lambda0;
+              // double lambda1 = lambda0;
 
-              if (Ifunc_SNP(j) == 1)
-              {
-                for (int func_index = 0; func_index < ncol_func_lambda; func_index++)
-                {
-                  lambda1 = lambda1 + z_matrix(j, func_index) * temp_lambda_vec(func_index);
-                }
-              }
+              double lambda1 = lambda0 + (Ifunc_SNP(j) == 1) * arma::sum(
+                                                                   z_matrix.row(j) % temp_lambda_vec);
 
               for (int q = 0; q < Q; q++)
               {
                 double bj_bar = summary_betas(j, q);
                 if (bj_bar != 0.0)
                 {
-                  double threshold;
-                  if (Q == 1)
-                    threshold = lambda1;
-                  else
-                    threshold = lambda1 + lambda2 / (sum_betas(j) + tau2);
+                  double threshold = ((z_scale == 1) * SD_vec(j, q) + (z_scale == 0)) *
+                                     (lambda1 + (Q != 1) * lambda2 / (sum_betas(j) + tau2));
 
-                  // SDvec is 1/sqrt(sample size of curr. GWA)
-                  if (z_scale == 1)
-                    threshold *= SD_vec(j, q);
-
-                  if (bj_bar > threshold)
-                    joint_b_matrix(j, q) = bj_bar - threshold;
-                  else if (bj_bar < -threshold)
-                    joint_b_matrix(j, q) = bj_bar + threshold;
-                  else
-                    joint_b_matrix(j, q) = 0.0;
+                  joint_b_matrix(j, q) = (bj_bar > threshold) * (bj_bar - threshold) +
+                                         (bj_bar < -threshold) * (bj_bar + threshold);
                 }
 
                 if (summary_betas(j, q) * joint_b_matrix(j, q) < 0)
-                {
-                  Rprintf("summary_betas[j]=%d\n", j);
-                  Rprintf("summary_betas[q]=%d\n", q);
-                  Rprintf("summary_betas[j][q]=%e\n", summary_betas(j, q));
-                  Rprintf("joint_b_matrix[j][q]=%e\n", joint_b_matrix(j, q));
-                  perror("sign inverse");
-                }
+                  perror("Sign inverse error");
               }
             }
           }
 
-          // Everything up to this point is only done on the first iteration, of course
-          // once for each set of tuning params (standard and functional)
-          // Inserting a “#pragma omp parallel for” right here (with some other boilerplate) should be
-          // All that is necessary to parallelize it (to start) (will test this)
-          // Since there are lots of nested for loops, it may be possible to parallelize it further with
-          // “collapse(n)” where n is the number of nested loops to parallelize
+          // Finished initialization
+          // Now, iterate over all SNPs in LD
           for (int p = 0; p < num_SNP; p++)
           {
             int j = index_matrix(p, 0);
-            double lambda1 = lambda0;
+            // double lambda1 = lambda0;
 
-            if (Ifunc_SNP(j) == 1)
-            {
-              for (int func_index = 0; func_index < ncol_func_lambda; func_index++)
-              {
-                lambda1 += z_matrix(j, func_index) * temp_lambda_vec(func_index);
-              }
-            }
+            double lambda1 = lambda0 + (Ifunc_SNP(j) == 1) * arma::sum(
+                                                                 z_matrix.row(j) % temp_lambda_vec);
 
             for (int q = 0; q < Q; q++)
             {
@@ -179,27 +145,13 @@ Rcpp::List gsfPEN_cpp(
                   double bj_bar = summary_betas(j, q);
                   int i = index_matrix(p, 1);
 
-                  for (int i = index_matrix(p, 1); i < index_matrix(p, 2) + 1; i++)
+                  for (int i = index_matrix(p, 1); i <= index_matrix(p, 2); i++)
                   {
                     bj_bar -= ld_vec(i) * joint_b_matrix(ld_J(i), q);
                   }
-                  // if (tuning_index == 18 && n == 1) {
-                  //   printf("q: %d, i: %d, ld_vec(i): %f\n", q, i, ld_vec(i), joint_b_matrix(ld_J(i), q));
-                  //   printf("ld_J(i): %d, joint_b_matrix(ld_J(i), q): %f\n", ld_J(i), joint_b_matrix(ld_J(i), q));
-                  //   printf("bj_bar: %f\n", bj_bar);
-                  // }
 
-                  // if (tuning_index == 18 && n == 1) printf("lambda1: %f\n", lambda1);
-                  double threshold;
-                  if (Q == 1)
-                    threshold = lambda1;
-                  else
-                    threshold = lambda1 + lambda2 / (sum_betas(j) + tau2);
-
-                  // if (tuning_index == 18 && n == 1) {
-                  //   printf("threshold: %f\n", threshold);
-                  //   printf("sum_betas(j): %f\n", sum_betas(j));
-                  // }
+                  double threshold = ((z_scale == 1) * SD_vec(j, q) + (z_scale == 0)) *
+                                     (lambda1 + (Q != 1) * lambda2 / (sum_betas(j) + tau2));
 
                   if (fabs(bj_bar) > upper_val)
                   {
@@ -215,15 +167,8 @@ Rcpp::List gsfPEN_cpp(
                     }
                   }
 
-                  if (z_scale == 1)
-                    threshold *= SD_vec(j, q);
-
-                  if (bj_bar > threshold)
-                    joint_b_matrix(j, q) = bj_bar - threshold;
-                  else if (bj_bar < -threshold)
-                    joint_b_matrix(j, q) = bj_bar + threshold;
-                  else
-                    joint_b_matrix(j, q) = 0.0;
+                  joint_b_matrix(j, q) = (bj_bar > threshold) * (bj_bar - threshold) +
+                                         (bj_bar < -threshold) * (bj_bar + threshold);
                 }
                 else
                 {
@@ -237,35 +182,17 @@ Rcpp::List gsfPEN_cpp(
             }
           }
 
-          // Actual iteration that checks convergence
-          bool found = false;
-          int df_q = 0;
-          for (int p = 0; p < P; p++)
-          {
-            for (int q = 0; q < Q; q++)
-            {
-              if (fabs(joint_b_matrix(p, q)) > upper_val)
-                skip(p, q) = 1;
+          // Update the skip matrix
+          skip.elem(
+                  arma::find(
+                      arma::abs(joint_b_matrix) > upper_val))
+              .ones();
 
-              if (q == 0)
-              {
-                if (fabs(joint_b_matrix(p, q)) != 0)
-                  df_q++;
-
-                if (df_q > df_max)
-                {
-                  converges = false;
-                  break;
-                }
-              }
-
-              if (fabs(temp_b_matrix(p, q) - joint_b_matrix(p, q)) > epsilon)
-              {
-                found = true;
-                break;
-              }
-            }
-          }
+          // Check for divergence
+          int df_q = arma::accu(
+              arma::abs(joint_b_matrix(arma::span::all, 0)) != 0.0);
+          if (df_q > df_max)
+            converges = false;
 
           if (!converges)
           {
@@ -273,48 +200,29 @@ Rcpp::List gsfPEN_cpp(
             break;
           }
 
+          // Check if the beta matrix has converged
+          bool found = arma::any(
+              arma::find(
+                  arma::abs(temp_b_matrix - joint_b_matrix) > epsilon));
+
           if (!found)
           {
-            int beta_idx = 0;
-            for (int q = 0; q < Q; q++)
-            {
-              for (int p = 0; p < P; p++)
-              {
-                if (joint_b_matrix(p, q) != 0.0)
-                  beta_matrix(tuning_index, beta_idx) = joint_b_matrix(p, q);
-                beta_idx++;
-              }
-            }
+            // Determine which entries need to update
+            arma::uvec beta_indices = arma::find(joint_b_matrix != 0.0);
+            beta_indices.for_each(
+                [&](arma::uword idx)
+                {
+                  arma::uvec beta_subscript = arma::ind2sub(arma::size(joint_b_matrix), idx);
+                  beta_matrix(tuning_index, idx) = joint_b_matrix(beta_subscript(0), beta_subscript(1));
+                });
 
             num_iter_vec(tuning_index) = n;
             break;
           }
 
-          for (int p = 0; p < num_SNP; p++)
-          {
-            int j = index_matrix(p, 0);
-            sum_betas(j) = 0.0;
-
-            for (int q = 0; q < Q; q++)
-            {
-              temp_b_matrix(j, q) = joint_b_matrix(j, q);
-              sum_betas(j) += fabs(joint_b_matrix(j, q));
-            }
-          }
-
-          if (num_indices != 0)
-          {
-            for (int i = 0; i < num_indices; i++)
-            {
-              int j = index_J(i);
-              sum_betas(j) = 0.0;
-              for (int q = 0; q < Q; q++)
-              {
-                temp_b_matrix(j, q) = joint_b_matrix(j, q);
-                sum_betas(j) += fabs(joint_b_matrix(j, q));
-              }
-            }
-          }
+          // Update for next iteration if we haven't converged yet
+          temp_b_matrix(arma::span::all, arma::span::all) = joint_b_matrix(arma::span::all, arma::span::all);
+          sum_betas(arma::span::all) = arma::sum(arma::abs(joint_b_matrix(arma::span::all, arma::span::all)), 1);
 
           num_iter_vec(tuning_index) = n;
         }
