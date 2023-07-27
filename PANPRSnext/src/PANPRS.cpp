@@ -103,7 +103,6 @@ Rcpp::List gsfPEN_cpp(
             for (int i = 0; i < num_indices; i++)
             {
               int j = index_J(i);
-              // double lambda1 = lambda0;
 
               double lambda1 = lambda0 + (Ifunc_SNP(j) == 1) * arma::sum(
                                                                    z_matrix.row(j) % temp_lambda_vec);
@@ -131,7 +130,6 @@ Rcpp::List gsfPEN_cpp(
           for (int p = 0; p < num_SNP; p++)
           {
             int j = index_matrix(p, 0);
-            // double lambda1 = lambda0;
 
             double lambda1 = lambda0 + (Ifunc_SNP(j) == 1) * arma::sum(
                                                                  z_matrix.row(j) % temp_lambda_vec);
