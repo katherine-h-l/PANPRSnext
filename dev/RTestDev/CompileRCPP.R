@@ -1,1 +1,0 @@
-Rcpp::compileAttributes("~/Desktop/RTestDev/TestPKG")

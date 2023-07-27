@@ -1,5 +1,10 @@
 # Changes
 
+-   Increased peroformance greatly
+
+    -   Modified files: PANPRS.cpp
+    -   Description: Used branchless programming to replace many if statements allowing the compiler to load the instructions into the CPU pipeline more efficiently. Further improved performance by replacing many for loops with vectorized operations using armadillo functions.
+
 -   Increased performance by elimating unessary overwrites to the beta matrix
 
     -   Modified files: PANPRS.cpp
