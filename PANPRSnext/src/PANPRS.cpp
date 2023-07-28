@@ -29,17 +29,10 @@ Rcpp::List gsfPEN_cpp(
   int P = dims(1);
   int Q = dims(2);
 
-  int nrow_index_matrix = dims(3);
-  int ncol_index_matrix = dims(4);
-
-  int nrow_z_matrix = dims(5);
-  int ncol_z_matrix = dims(6);
-
   int nrow_func_lambda = dims(7);
   int ncol_func_lambda = dims(8);
 
   int nrow_tuning_matrix = dims(9);
-  int ncol_tuning_matrix = dims(10);
 
   int nrow_all_tuning_matrix = dims(11);
   int ncol_all_tuning_matrix = dims(12);
@@ -141,7 +134,6 @@ Rcpp::List gsfPEN_cpp(
                 if (summary_betas(j, q) != 0.0)
                 {
                   double bj_bar = summary_betas(j, q);
-                  int i = index_matrix(p, 1);
 
                   for (int i = index_matrix(p, 1); i <= index_matrix(p, 2); i++)
                   {

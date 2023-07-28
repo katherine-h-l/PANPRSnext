@@ -11,7 +11,7 @@
 
 
 
-<title>Test</title>
+<title>Profiling PANPRSnext</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1619,7 +1619,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Test</h1>
+<h1 class="title toc-ignore">Profiling PANPRSnext</h1>
 
 </div>
 
@@ -1652,7 +1652,7 @@ mem_old &lt;- profvis({
   )
 })</code></pre>
 <pre><code>## [1] &quot;Number of total tuning combinations = 3888&quot;
-## [1] &quot;Time elapsed: 32.262 seconds&quot;</code></pre>
+## [1] &quot;Time elapsed: 32.041 seconds&quot;</code></pre>
 <pre class="r"><code>print(mem_old)</code></pre>
 </div>
 </div>
@@ -1674,37 +1674,72 @@ mem_new &lt;- profvis({
 })</code></pre>
 <pre><code>## [1] &quot;Number of total tuning combinations = 3888&quot;
 ## [1] &quot;Removing tuning combinations that did not converge.&quot;
-## [1] &quot;Time elapsed: 395.751 seconds&quot;</code></pre>
+## [1] &quot;Time elapsed: 292.398 seconds&quot;</code></pre>
 <pre class="r"><code>print(mem_new)</code></pre>
 </div>
 </div>
 <div id="compare-memory-usage" class="section level1">
 <h1>Compare memory usage</h1>
+<pre class="r"><code>mem_usage_old = 2690.2 # MB
+mem_usage_armadillo = 2166.1 # MB
+mem_usage_sparse_beta = 1501.4 # MB
+mem_usage_sparse_beta_func = 1434.4 # MB
+mem_usage_all_sparse = 1532.0 # MB
+mem_usage_efficient = 1410.6 # MB
+
+mem_armadillo_vs_old = 100 * (mem_usage_old - mem_usage_armadillo) / mem_usage_old
+mem_sparse_beta_vs_old = 100 * (mem_usage_old - mem_usage_sparse_beta) / mem_usage_old
+mem_sparse_beta_func_vs_old = 100 * (mem_usage_old - mem_usage_sparse_beta_func) / mem_usage_old
+mem_all_sparse_vs_old = 100 * (mem_usage_old - mem_usage_all_sparse) / mem_usage_old
+mem_efficient_vs_old = 100 * (mem_usage_old - mem_usage_efficient) / mem_usage_old
+
+print(paste0(mem_armadillo_vs_old, &quot;% less memory used after switching to armadillo&quot;))</code></pre>
+<pre><code>## [1] &quot;19.4818229127946% less memory used after switching to armadillo&quot;</code></pre>
+<pre class="r"><code>print(paste0(mem_sparse_beta_vs_old, &quot;% less memory used with a sparse beta matrix&quot;))</code></pre>
+<pre><code>## [1] &quot;44.1900230466136% less memory used with a sparse beta matrix&quot;</code></pre>
+<pre class="r"><code>print(paste0(mem_sparse_beta_func_vs_old, &quot;% less memory used with a sparse beta matrix and func_index&quot;))</code></pre>
+<pre><code>## [1] &quot;46.6805441974574% less memory used with a sparse beta matrix and func_index&quot;</code></pre>
+<pre class="r"><code>print(paste0(mem_all_sparse_vs_old, &quot;% less memory used with all sparse matrices&quot;))</code></pre>
+<pre><code>## [1] &quot;43.05256114787% less memory used with all sparse matrices&quot;</code></pre>
+<pre class="r"><code>print(paste0(mem_efficient_vs_old, &quot;% less memory used with after optimizations&quot;))</code></pre>
+<pre><code>## [1] &quot;47.5652367853691% less memory used with after optimizations&quot;</code></pre>
+</div>
+<div id="compare-runtime" class="section level1">
+<h1>Compare runtime</h1>
 <pre class="r"><code>time_old = 32.417 # s
 time_armadillo = 41.101 # s
 time_sparse_beta = 75.702 # s
 time_sparse_beta_func = 79.257 # s
 time_all_sparse = 395.909 # s
+time_efficient = 48.515 # s
 
-mem_usage_old = 2690.2 # MB
-mem_usage_armadillo = 2166.1 # MB
-mem_usage_sparse_beta = 1501.4 # MB
-mem_usage_sparse_beta_func = 1434.4 # MB
-mem_usage_all_sparse = 1532.0 # MB
+time_armadillo_vs_old = -100 * (time_old - time_armadillo) / time_old
+time_sparse_beta_vs_old = -100 * (time_old - time_sparse_beta) / time_old
+time_sparse_beta_func_vs_old = -100 * (time_old - time_sparse_beta_func) / time_old
+time_all_sparse_vs_old = -100 * (time_old - time_all_sparse) / time_old
+time_efficient_vs_old = -100 * (time_old - time_efficient) / time_old
 
-armadillo_vs_old = 100 * (mem_usage_old - mem_usage_armadillo) / mem_usage_old
-sparse_beta_vs_old = 100 * (mem_usage_old - mem_usage_sparse_beta) / mem_usage_old
-sparse_beta_func_vs_old = 100 * (mem_usage_old - mem_usage_sparse_beta_func) / mem_usage_old
-all_sparse_vs_old = 100 * (mem_usage_old - mem_usage_all_sparse) / mem_usage_old
+print(paste0(time_armadillo_vs_old, &quot;% more time used after switching to armadillo&quot;))</code></pre>
+<pre><code>## [1] &quot;26.7884134867508% more time used after switching to armadillo&quot;</code></pre>
+<pre class="r"><code>print(paste0(time_sparse_beta_vs_old, &quot;% more time used with a sparse beta matrix&quot;))</code></pre>
+<pre><code>## [1] &quot;133.525619273838% more time used with a sparse beta matrix&quot;</code></pre>
+<pre class="r"><code>print(paste0(time_sparse_beta_func_vs_old, &quot;% more time used with a sparse beta matrix and func_index&quot;))</code></pre>
+<pre><code>## [1] &quot;144.492087484962% more time used with a sparse beta matrix and func_index&quot;</code></pre>
+<pre class="r"><code>print(paste0(time_all_sparse_vs_old, &quot;% more time used with all sparse matrices&quot;))</code></pre>
+<pre><code>## [1] &quot;1121.30055217941% more time used with all sparse matrices&quot;</code></pre>
+<pre class="r"><code>print(paste0(time_efficient_vs_old, &quot;% more time used with after optimizations&quot;))</code></pre>
+<pre><code>## [1] &quot;49.6591294691057% more time used with after optimizations&quot;</code></pre>
+</div>
+<div id="debug" class="section level1">
+<h1>Debug</h1>
+<pre class="r"><code>new$beta_matrix = as.matrix(new$beta_matrix)
 
-print(paste0(armadillo_vs_old, &quot;% less memory used after switching to armadillo&quot;))</code></pre>
-<pre><code>## [1] &quot;19.4818229127946% less memory used after switching to armadillo&quot;</code></pre>
-<pre class="r"><code>print(paste0(sparse_beta_vs_old, &quot;% less memory used with a sparse beta matrix&quot;))</code></pre>
-<pre><code>## [1] &quot;44.1900230466136% less memory used with a sparse beta matrix&quot;</code></pre>
-<pre class="r"><code>print(paste0(sparse_beta_func_vs_old, &quot;% less memory used with a sparse beta matrix and func_index&quot;))</code></pre>
-<pre><code>## [1] &quot;46.6805441974574% less memory used with a sparse beta matrix and func_index&quot;</code></pre>
-<pre class="r"><code>print(paste0(all_sparse_vs_old, &quot;% less memory used with all sparse matrices&quot;))</code></pre>
-<pre><code>## [1] &quot;43.05256114787% less memory used with all sparse matrices&quot;</code></pre>
+c(
+  all.equal(new$beta_matrix, old$BetaMatrix),
+  all(new$num_iter_vec == old$Numitervec),
+  all(new$all_tuning_matrix == old$AllTuningMatrix)
+)</code></pre>
+<pre><code>## [1] TRUE TRUE TRUE</code></pre>
 </div>
 
 
