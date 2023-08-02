@@ -135,8 +135,6 @@ gsPEN_R <- function(
 
 
   z_matrix <- as.matrix(1 - func_index)
-  # z_matrix <- matrix(1 - unlist(func_index), nrow = nrow(func_index), ncol = ncol(func_index), byrow = TRUE)
-  # rownames(z_matrix) <- rownames(func_index)
 
   sum_func_index <- apply(z_matrix, 1, sum)
   Ifunc_SNP <- rep(0, P)

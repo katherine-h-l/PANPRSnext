@@ -1,5 +1,20 @@
 # Changes
 
+-   Merged rcpp branch into the master branch
+
+    -   The package can now be installed directly from github using:
+
+    ```r
+    devtools::install_github("katherine-h-l/PANPRS-next", force = TRUE)
+    ```
+
+    -   Need to update gsPEN.R and gsPEN.cpp now as well.
+        -   Renamed and created new files.
+        -   PANPRS.R -> PANPRS_gsfPEN.R
+        -   PANPRS.cpp -> PANPRS_gsfPEN.cpp
+        -   PANPRS.hpp -> PANPRS_gsfPEN.hpp
+        -   New: PANPRS_gsPEN.R, PANPRS_gsPEN.cpp, PANPRS_gsPEN.hpp
+
 -   Increased peroformance greatly
 
     -   Modified files: PANPRS.cpp
