@@ -1,3 +1,6 @@
+# Custom linter
+.lintr
+
 # New Data Set
 NewDataSet/*.gz
 NewDataSet/*.RData
