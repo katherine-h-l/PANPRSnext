@@ -1,11 +1,11 @@
 Package: PANPRSnext
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Building polygenic risk prediction models based on summary
+        statistics of genome-wide association studies
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Katherine Luo
+Maintainer: Katherine Luo <hluo224@uwo.ca>
+Description: Shrinkage estimator for polygenic risk prediction models based on summary statistics of genome-wide association studies.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

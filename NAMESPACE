@@ -3,5 +3,5 @@
 export(debug_test_pkg)
 export(gsfPEN_R)
 export(test_pkg)
-importFrom(Rcpp,sourceCpp)
+importFrom(Rcpp, sourceCpp)
 useDynLib(PANPRSnext, .registration = TRUE)
