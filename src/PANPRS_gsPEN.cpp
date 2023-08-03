@@ -25,7 +25,6 @@ Rcpp::List gsPEN_cpp(
   int Q = dims(2);
 
   int nrow_tuning_matrix = dims(5);
-  int ncol_tuning_matrix = dims(6);
 
   int nrow_beta_matrix = dims(7);
   int ncol_beta_matrix = dims(8);
@@ -55,6 +54,11 @@ Rcpp::List gsPEN_cpp(
     double lambda1 = tuning_matrix(tuning_index, 0);
     double lambda2 = tuning_matrix(tuning_index, 2);
     double tau2 = tuning_matrix(tuning_index, 3);
+
+    joint_b_matrix(arma::span::all, arma::span::all) = 0.0;
+    temp_b_matrix(arma::span::all, arma::span::all) = 0.0;
+    skip(arma::span::all, arma::span::all) = 0;
+    sum_betas(arma::span::all) = 0.0;
 
     bool converges = true;
     for (int n = 1; n <= num_iter; n++)

@@ -34,9 +34,9 @@ gsfPEN_R <- function(
   summary_betas <- matrix(0, nrow = P, ncol = Q)
   SD_vec <- matrix(0, nrow = P, ncol = Q)
 
-  for (ii in 1:Q) {
-    summary_betas[, ii] <- summary_z[, ii] / sqrt(n_vec[ii])
-    SD_vec[, ii] <- 1 / sqrt(n_vec[ii])
+  for (i in 1:Q) {
+    summary_betas[, i] <- summary_z[, i] / sqrt(n_vec[i])
+    SD_vec[, i] <- 1 / sqrt(n_vec[i])
   }
 
   rownames(summary_betas) <- rownames(summary_z)

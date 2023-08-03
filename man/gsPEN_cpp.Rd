@@ -12,11 +12,6 @@ gsPEN_cpp(
   ld_vec,
   SD_vec,
   tuning_matrix,
-  lambda0_vec,
-  z_matrix,
-  lambda_vec_func,
-  func_lambda,
-  Ifunc_SNP,
   dims,
   params
 )
@@ -35,16 +30,6 @@ gsPEN_cpp(
 \item{SD_vec}{matrix of SD values}
 
 \item{tuning_matrix}{matrix of tuning parameters}
-
-\item{lambda0_vec}{vector of lambda0 values}
-
-\item{z_matrix}{matrix of z values}
-
-\item{lambda_vec_func}{vector of lambda values}
-
-\item{func_lambda}{matrix of lambda values}
-
-\item{Ifunc_SNP}{vector of indices of SNPs in LD with the current SNP}
 
 \item{dims}{vector of dimensions}
 

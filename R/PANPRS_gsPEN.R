@@ -27,9 +27,9 @@ gsPEN_R <- function(
   summary_betas <- matrix(0, nrow = P, ncol = Q)
   SD_vec <- matrix(0, nrow = P, ncol = Q)
 
-  for (ii in 1:Q) {
-    summary_betas[, ii] <- summary_z[, ii] / sqrt(n_vec[ii])
-    SD_vec[, ii] <- 1 / sqrt(n_vec[ii])
+  for (i in 1:Q) {
+    summary_betas[, i] <- summary_z[, i] / sqrt(n_vec[i])
+    SD_vec[, i] <- 1 / sqrt(n_vec[i])
   }
 
   rownames(summary_betas) <- rownames(summary_z)
@@ -52,8 +52,6 @@ gsPEN_R <- function(
       median_val
     )
   }
-
-  counts <- apply(summary_betas, 1, Non_zero)
 
   beta_index <- c(seq_len(nrow(summary_betas))) - 1
   SNP_names <- rownames(summary_betas)
@@ -163,6 +161,8 @@ gsPEN_R <- function(
     "lambda2",
     "tau"
   )
+  tuning_matrix <- tuning_matrix[, c(1, 3, 4)]
+  tuning_matrix[c(1:len_lambda), c(2:3)] <- NA
 
   num_iter_vec <- Z$num_iter_vec
 
