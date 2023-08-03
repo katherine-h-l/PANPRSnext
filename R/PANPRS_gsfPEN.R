@@ -219,7 +219,7 @@ gsfPEN_R <- function(
   colnames(all_tuning_matrix) <- c(
     "lambda0",
     paste0("lambdaf", c(1:num_func)),
-    "lamda2",
+    "lambda2",
     "tau2"
   )
 
