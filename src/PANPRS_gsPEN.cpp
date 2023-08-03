@@ -55,15 +55,15 @@ Rcpp::List gsPEN_cpp(
     double lambda2 = tuning_matrix(tuning_index, 2);
     double tau2 = tuning_matrix(tuning_index, 3);
 
-    joint_b_matrix(arma::span::all, arma::span::all) = 0.0;
-    temp_b_matrix(arma::span::all, arma::span::all) = 0.0;
-    skip(arma::span::all, arma::span::all) = 0;
-    sum_betas(arma::span::all) = 0.0;
+    joint_b_matrix.zeros();
+    temp_b_matrix.zeros();
+    skip.zeros();
+    sum_betas.zeros();
 
     bool converges = true;
     for (int n = 1; n <= num_iter; n++)
     {
-      // Realistically, this is always 0 given the R interfaces only selects those that are present in both
+
       if (num_indices != 0)
       {
         for (int i = 0; i < num_indices; i++)

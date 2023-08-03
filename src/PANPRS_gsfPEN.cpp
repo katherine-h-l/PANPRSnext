@@ -90,7 +90,6 @@ Rcpp::List gsfPEN_cpp(
         bool converges = true;
         for (int n = 1; n <= num_iter; n++)
         {
-          // Realistically, this is always 0 given the R interfaces only selects those that are present in both
           if (num_indices != 0)
           {
             for (int i = 0; i < num_indices; i++)
