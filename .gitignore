@@ -5,6 +5,9 @@
 NewDataSet/*.gz
 NewDataSet/*.RData
 
+# VS Code files
+.vscode
+
 # Raw Rmd files
 *.Rmd
 
@@ -17,6 +20,7 @@ NewDataSet/*.RData
 # Object files
 *.o
 *.so
+*.dll
 
 # History files
 .Rhistory

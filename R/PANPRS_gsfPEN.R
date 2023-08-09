@@ -20,10 +20,8 @@ gsfPEN_R <- function(
     lambda_vec_limit_len = c(1.5, 3),
     df_max = NULL,
     debug_output = FALSE) {
-  time <- proc.time()
-
   if (z_scale != 1) {
-    error("Tuning values set-up for multiple traits analysis requires z_scale=1.") # nolint: object_usage_linter.
+    error("Tuning values set-up for multiple traits analysis requires z_scale = 1") # nolint: object_usage_linter.
   }
 
   num_func <- ncol(func_index)
@@ -130,7 +128,7 @@ gsfPEN_R <- function(
   }
 
   if (nrow(func_index) != nrow(summary_betas)) {
-    stop("nrow of summary_betas and row of func_index do not match.")
+    stop("nrow of summary_betas and row of func_index do not match")
   }
 
 
@@ -188,8 +186,8 @@ gsfPEN_R <- function(
     num_indices # 7
   )
 
+  cat("Number of total tuning combinations =", nrow_all_tuning_matrix)
 
-  print(paste0("Number of total tuning combinations = ", nrow_all_tuning_matrix))
 
   Z <- gsfPEN_cpp(
     summary_betas,
@@ -227,8 +225,8 @@ gsfPEN_R <- function(
 
   # Remove the tuning combinations that did not converge (correspons to -2 in num_iter_vec)
   if (!debug_output) {
-    print("Removing tuning combinations that did not converge.")
     converge_index <- which(num_iter_vec > 0)
+    cat("Removing", length(num_iter_vec) - length(converge_index), "tuning combinations that did not converge")
     num_iter_vec <- num_iter_vec[converge_index]
     beta_matrix <- beta_matrix[converge_index, ]
     all_tuning_matrix <- all_tuning_matrix[converge_index, ]
@@ -239,9 +237,6 @@ gsfPEN_R <- function(
     num_iter_vec = num_iter_vec,
     all_tuning_matrix = all_tuning_matrix
   )
-
-  time <- proc.time() - time
-  print(paste0("Time elapsed: ", time[3], " seconds"))
 
   return(output)
 }

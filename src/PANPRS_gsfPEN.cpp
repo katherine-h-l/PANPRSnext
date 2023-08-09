@@ -87,6 +87,11 @@ Rcpp::List gsfPEN_cpp(
         double tau2 = tuning_matrix(tun_idx_2, 3);
         all_tuning_matrix(tuning_index, ncol_all_tuning_matrix - 1) = tau2;
 
+        joint_b_matrix.zeros();
+        temp_b_matrix.zeros();
+        skip.zeros();
+        sum_betas.zeros();
+
         bool converges = true;
         for (int n = 1; n <= num_iter; n++)
         {
