@@ -1,5 +1,10 @@
 # Changes
 
+-   Finished Armadillo implementation of gsPEN and gsfPEN
+
+    -   New File Structure: PANPRS_gsfPEN.cpp PANPRS_gsfPEN.hpp PANPRS_gsfPEN.R, PANPRS_gsPEN.cpp PANPRS_gsPEN.hpp PANPRS_gsPEN.R
+    -   Description: Fixed a bug in PANPRS_gsfPEN.cpp that caused matrix values to be updated incorrectly. Fixed the gsPEN implementation using Armadillo. Both the Armadillo gsPEN and gsfPEN implementations work as expected and give identical results to the original package now.
+
 -   Merged rcpp branch into the master branch
 
     -   The package can now be installed directly from github using:
