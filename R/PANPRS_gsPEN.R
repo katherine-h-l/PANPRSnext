@@ -131,7 +131,7 @@ gsPEN_R <- function(
   )
 
 
-  cat("Number of total tuning combinations =", nrow_tuning_matrix)
+  cat("Number of total tuning combinations =", nrow_tuning_matrix, "\n")
 
   Z <- gsPEN_cpp(
     summary_betas,
@@ -167,7 +167,7 @@ gsPEN_R <- function(
   # Remove the tuning combinations that did not converge (correspons to -2 in num_iter_vec)
   if (!debug_output) {
     converge_index <- which(num_iter_vec > 0)
-    cat("Removing", length(num_iter_vec) - length(converge_index), "tuning combinations that did not converge")
+    cat("Removing (", length(num_iter_vec) - length(converge_index), " ) tuning combinations that did not converge\n")
     num_iter_vec <- num_iter_vec[converge_index]
     beta_matrix <- beta_matrix[converge_index, ]
     tuning_matrix <- tuning_matrix[converge_index, ]
