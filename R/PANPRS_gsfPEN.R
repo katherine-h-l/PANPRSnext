@@ -19,6 +19,7 @@ gsfPEN_R <- function(
     lambda_vec = NULL,
     lambda_vec_limit_len = c(1.5, 3),
     df_max = NULL,
+    sparse_beta = FALSE,
     debug_output = FALSE) {
   if (z_scale != 1) {
     error("Tuning values set-up for multiple traits analysis requires z_scale = 1") # nolint: object_usage_linter.
@@ -186,10 +187,7 @@ gsfPEN_R <- function(
     num_indices # 7
   )
 
-  cat("Number of total tuning combinations =", nrow_all_tuning_matrix, "\n")
-
-
-  Z <- gsfPEN_cpp(
+  args <- list(
     summary_betas,
     ld_J,
     index_matrix,
@@ -205,6 +203,20 @@ gsfPEN_R <- function(
     dims,
     params
   )
+
+  cat("Number of total tuning combinations =", nrow_all_tuning_matrix, "\n")
+
+  if (sparse_beta) {
+    Z <- do.call(
+      gsfPEN_sparse_cpp,
+      args
+    )
+  } else {
+    Z <- do.call(
+      gsfPEN_cpp,
+      args
+    )
+  }
 
   beta_matrix <- Z$beta_matrix
   colnames(beta_matrix) <- paste0(

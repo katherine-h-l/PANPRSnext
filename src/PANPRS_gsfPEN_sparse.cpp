@@ -6,9 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "PANPRS_gsfPEN.hpp"
+#include "PANPRS_gsfPEN_sparse.hpp"
 
-Rcpp::List gsfPEN_cpp(
+Rcpp::List gsfPEN_sparse_cpp(
     arma::Mat<double> summary_betas,
     arma::Col<int> ld_J,
     arma::Mat<int> index_matrix,
@@ -55,7 +55,7 @@ Rcpp::List gsfPEN_cpp(
     arma::Col<double> sum_betas(P, arma::fill::zeros);
 
     arma::Mat<double> all_tuning_matrix(nrow_all_tuning_matrix, ncol_all_tuning_matrix, arma::fill::zeros);
-    arma::Mat<double> beta_matrix(nrow_beta_matrix, ncol_beta_matrix, arma::fill::zeros);
+    arma::SpMat<double> beta_matrix(nrow_beta_matrix, ncol_beta_matrix);
     arma::Mat<double> joint_b_matrix(P, Q, arma::fill::zeros);
     arma::Mat<double> temp_b_matrix(P, Q, arma::fill::zeros);
     arma::Mat<int> skip(P, Q, arma::fill::zeros);
