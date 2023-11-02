@@ -175,7 +175,6 @@ gsfPEN_R <- function(
   nrow_tuning_matrix <- nrow(tuning_matrix)
   ncol_tuning_matrix <- ncol(tuning_matrix)
 
-  cat(nrow_tuning_matrix, length(p_threshold), nrow_func_lambda)
   nrow_all_tuning_matrix <- nrow_tuning_matrix * length(p_threshold) * nrow_func_lambda
   ncol_all_tuning_matrix <- (num_func + 1) + 2
 
