@@ -1,3 +1,20 @@
+#' Run the gsPEN algorithm for multiple traits, without functional annotations.
+#' @param summary_z A matrix of summary statistics for each SNP and trait.
+#' @param n_vec A vector of sample sizes for each of the Q traits corresponding to the Q columns of summary_z.
+#' @param plinkLD A matrix of LD values for each pair of SNPs.
+#' @param n_iter The number of iterations to run the algorithm.
+#' @param upper_val The upper bound for the tuning parameter.
+#' @param breaking The number of iterations to run before checking for convergence.
+#' @param z_scale The scaling factor for the summary statistics.
+#' @param tuning_matrix A matrix of tuning parameters.
+#' @param tau_factor A vector of factors to multiply the median value by to get the tuning parameters.
+#' @param len_lim_lambda The number of tuning parameters to use for the first iteration.
+#' @param sub_tuning The number of tuning parameters to use for the second iteration.
+#' @param lim_lambda The range of tuning parameters to use for the first iteration.
+#' @param len_lambda The number of tuning parameters to use for the second iteration.
+#' @param df_max The maximum degrees of freedom for the model.
+#' @param sparse_beta Whether to use the sparse version of the algorithm.
+#' @param debug_output Whether to output the tuning combinations that did not converge.
 #' @export
 gsPEN_R <- function(
     summary_z,
