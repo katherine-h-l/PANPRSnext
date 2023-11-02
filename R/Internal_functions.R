@@ -3,62 +3,95 @@ Tuning_setup_group_only <- function(
     sub_tuning,
     lim_lambda,
     len_lambda,
-    len_lim_lambda,
-    median_val) {
+    median_val,
+    Q) {
+  print(paste0(Q))
   lambda_vec <- seq(min(lim_lambda), max(lim_lambda), len = len_lambda)
-  tuning_matrix <- cbind(lambda_vec, 1, 0, 1)
 
-  top_vec <- seq(min(lim_lambda), max(lim_lambda), len = len_lim_lambda)
+  if (Q == 1) {
+    ratios <- 1
+  } else {
+    ratios <- seq(1, 0, len = sub_tuning)
+  }
+  ratios <- 1
 
+  start <- TRUE
   for (i in seq_along(tau_vec)) {
     tau <- tau_vec[i]
 
-    for (t in 2:length(top_vec)) {
-      top <- top_vec[t]
-      lambda_vec <- seq(min(lim_lambda), (top - 0.05), len = sub_tuning)
-
-      temp <- (top - lambda_vec) * (median_val + tau)
-      tuning_matrix <- rbind(tuning_matrix, cbind(lambda_vec, tau, temp, tau))
+    for (t in 2:length(lambda_vec)) {
+      total <- lambda_vec[t]
+      lower <- total * ratios
+      upper <- total * (1 - ratios)
+      for (idx in seq_along(lower)) {
+        temp <- cbind(lower[idx], 0, upper[idx] * tau, tau)
+        if (start) {
+          tuning_matrix <- temp
+          start <- FALSE
+        } else {
+          tuning_matrix <- rbind(tuning_matrix, temp)
+        }
+      }
     }
   }
+
+  string_tuning <- apply(tuning_matrix, 1, paste0, collapse = ":")
+  unique_tuning <- unique(string_tuning)
+  tuning_matrix <- tuning_matrix[match(unique_tuning, string_tuning), ]
+
   return(tuning_matrix)
 }
 
 Tuning_setup_group_func <- function(
     lambda_vec,
     lambda_vec_limit_len,
-    p_threshold,
+    # p_threshold,
     num_func,
     tau_vec,
     sub_tuning,
     lim_lambda,
     len_lambda,
-    len_lim_lambda,
-    median_val) {
+    # len_lim_lambda,
+    median_val,
+    equal_lambda = TRUE,
+    Q) {
+  if (is.null(lambda_vec)) {
+    lambda_vec <- seq(0, lambda_vec_limit_len[1], length.out = lambda_vec_limit_len[2])
+  }
+
+  if (equal_lambda) {
+    func_lambda_inputs <- matrix(rep(lambda_vec, each = num_func), length(lambda_vec), num_func, byrow = TRUE)
+  } else {
+    func_lambda0 <- permutations(length(lambda_vec), num_func, repeats.allowed = TRUE)
+    func_lambda_inputs <- matrix(lambda_vec[c(func_lambda0)], nrow(func_lambda0), ncol(func_lambda0), byrow = FALSE)
+  }
+
+  if (Q == 1) {
+    ratios <- 1
+  } else {
+    ratios <- seq(1, 0, len = sub_tuning)
+  }
+
   lim_lambda_vec <- seq(min(lim_lambda), max(lim_lambda), len = len_lambda)
 
-  top_vec <- seq(min(lim_lambda), max(lim_lambda), len = len_lim_lambda)
-
-  start <- 1
+  start <- TRUE
   for (i in seq_along(tau_vec)) {
     tau <- tau_vec[i]
 
-    for (t in 2:length(top_vec)) {
-      top <- top_vec[t]
-      lim_lambda_vec <- seq(min(lim_lambda), (top - 0.05), len = sub_tuning)
-
-      temp <- (top - lim_lambda_vec) * (median_val + tau)
-      if (start == 1) {
-        tuning_matrix <- cbind(lim_lambda_vec, tau, temp, tau)
-        start <- 0
-      } else {
-        tuning_matrix <- rbind(tuning_matrix, cbind(lim_lambda_vec, tau, temp, tau))
+    for (t in seq_along(lim_lambda_vec)) {
+      total <- lim_lambda_vec[t]
+      lower <- total * ratios
+      upper <- total * (1 - ratios)
+      for (idx in seq_along(lower)) {
+        temp <- cbind(lower[idx], func_lambda_inputs, upper[idx] * tau, tau)
+        if (start) {
+          tuning_matrix <- temp
+          start <- FALSE
+        } else {
+          tuning_matrix <- rbind(tuning_matrix, temp)
+        }
       }
     }
-  }
-
-  if (is.null(lambda_vec)) {
-    lambda_vec <- seq(0, lambda_vec_limit_len[1], length.out = lambda_vec_limit_len[2])
   }
 
   func_lambda <- permutations( # nolint: object_usage_linter.
@@ -66,6 +99,10 @@ Tuning_setup_group_func <- function(
     num_func,
     repeats.allowed = TRUE
   ) - 1
+
+  string_tuning <- apply(tuning_matrix, 1, paste0, collapse = ":")
+  unique_tuning <- unique(string_tuning)
+  tuning_matrix <- tuning_matrix[match(unique_tuning, string_tuning), ]
 
   output <- list(
     func_lambda = func_lambda,

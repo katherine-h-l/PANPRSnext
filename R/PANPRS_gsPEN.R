@@ -47,8 +47,8 @@ gsPEN_R <- function(
       sub_tuning,
       lim_lambda,
       len_lambda,
-      len_lim_lambda,
-      median_val
+      median_val,
+      Q
     )
   }
 
