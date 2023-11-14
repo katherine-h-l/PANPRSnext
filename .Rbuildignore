@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^CHANGELOG\.md$
+^\.gitignore$
+^\.lintr$
