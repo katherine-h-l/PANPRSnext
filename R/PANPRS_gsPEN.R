@@ -15,6 +15,7 @@
 #' @param df_max The maximum degrees of freedom for the model.
 #' @param sparse_beta Whether to use the sparse version of the algorithm.
 #' @param debug_output Whether to output the tuning combinations that did not converge.
+#' @importFrom stats median qnorm quantile
 #' @export
 gsPEN_R <- function(
     summary_z,
@@ -34,7 +35,7 @@ gsPEN_R <- function(
     sparse_beta = FALSE,
     debug_output = FALSE) {
   if (z_scale != 1) {
-    error("Tuning values set-up for multiple traits analysis requires z_scale = 1") # nolint: object_usage_linter.
+    stop("Tuning values set-up for multiple traits analysis requires z_scale = 1") # nolint: object_usage_linter.
   }
 
   P <- nrow(summary_z)

@@ -6,6 +6,9 @@
 \usage{
 test_gsfPEN(...)
 }
+\arguments{
+\item{...}{Additional arguments to pass to gsfPEN_R}
+}
 \description{
 Run gsfPEN on the provided data set
 }

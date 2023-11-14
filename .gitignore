@@ -33,6 +33,7 @@ NewDataSet/*.RData
 *-Ex.R
 
 # Output files from R CMD build
+/*.zip
 /*.tar.gz
 
 # Output files from R CMD check

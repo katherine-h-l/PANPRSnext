@@ -1,7 +1,6 @@
 Package: PANPRSnext
 Type: Package
-Title: Building polygenic risk prediction models based on summary
-        statistics of genome-wide association studies
+Title: Building Polygenic Risk Prediction Models Based on Summary Statistics of Genome-Wide Association Studies
 Version: 0.1.0
 Author: Katherine Luo
 Maintainer: Katherine Luo <hluo224@uwo.ca>
@@ -10,7 +9,7 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
-Depends: gtools, permutations, RcppArmadillo
+Depends: gtools
 LinkingTo: 
     Rcpp,
     RcppArmadillo

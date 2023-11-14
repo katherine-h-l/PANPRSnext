@@ -6,6 +6,9 @@
 \usage{
 test_gsPEN(...)
 }
+\arguments{
+\item{...}{Additional arguments to pass to gsPEN_R}
+}
 \description{
 Run gsPEN on the provided data set
 }

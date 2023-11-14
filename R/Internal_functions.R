@@ -42,6 +42,7 @@ Tuning_setup_group_only <- function(
   return(tuning_matrix)
 }
 
+#' @importFrom gtools permutations
 Tuning_setup_group_func <- function(
     lambda_vec,
     lambda_vec_limit_len,
