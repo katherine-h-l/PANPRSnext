@@ -20,7 +20,8 @@ gsPEN_R(
   len_lambda = 200,
   df_max = NULL,
   sparse_beta = FALSE,
-  debug_output = FALSE
+  debug_output = FALSE,
+  verbose = FALSE
 )
 }
 \arguments{
@@ -55,6 +56,14 @@ gsPEN_R(
 \item{sparse_beta}{Whether to use the sparse version of the algorithm.}
 
 \item{debug_output}{Whether to output the tuning combinations that did not converge.}
+
+\item{verbose}{Whether to output information through the evaluation of the algorithm.}
+}
+\value{
+A named list containing the following elements:
+beta_matrix: A matrix of the estimated coefficients for each SNP and trait.
+num_iter_vec: A vector of the number of iterations for each tuning combination.
+all_tuning_matrix: A matrix of the tuning parameters used for each tuning combination.
 }
 \description{
 Run the gsPEN algorithm for multiple traits, without functional annotations.
