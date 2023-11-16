@@ -3,6 +3,7 @@
 #' @importFrom utils data
 #' @export
 test_gsPEN <- function(...) {
+  summaryZ <- Nvec <- plinkLD <- funcIndex <- NULL
   data("summaryZ", envir = environment())
   data("Nvec", envir = environment())
   data("plinkLD", envir = environment())
@@ -23,6 +24,7 @@ test_gsPEN <- function(...) {
 #' @importFrom utils data
 #' @export
 test_gsfPEN <- function(...) {
+  summaryZ <- Nvec <- plinkLD <- funcIndex <- NULL
   data("summaryZ", envir = environment())
   data("Nvec", envir = environment())
   data("plinkLD", envir = environment())
