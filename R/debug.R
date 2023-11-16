@@ -3,7 +3,7 @@
 #' @importFrom utils data
 #' @export
 test_gsPEN <- function(...) {
-  summaryZ <- Nvec <- plinkLD <- funcIndex <- NULL
+  summaryZ <- Nvec <- plinkLD <- NULL
   data("summaryZ", envir = environment())
   data("Nvec", envir = environment())
   data("plinkLD", envir = environment())
@@ -15,6 +15,7 @@ test_gsPEN <- function(...) {
     summary_z = subset_summary_z, # nolint: object_usage_linter.
     n_vec = Nvec, # nolint: object_usage_linter.
     plinkLD = plinkLD, # nolint: object_usage_linter.
+    sub_tuning = 1,
     ...
   )
 
@@ -41,6 +42,7 @@ test_gsfPEN <- function(...) {
     n_vec = Nvec, # nolint: object_usage_linter.
     plinkLD = plinkLD, # nolint: object_usage_linter.
     func_index = subset_func_index, # nolint: object_usage_linter.
+    sub_tuning = 1,
     ...
   )
 
