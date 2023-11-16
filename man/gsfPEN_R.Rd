@@ -71,3 +71,14 @@ gsfPEN_R(
 \description{
 Run the gsfPEN algorithm for multiple traits, with functional annotations.
 }
+\examples{
+# Load the library and data
+library(PANPRSnext)
+data("summaryZ")
+data("Nvec")
+data("plinkLD")
+data("funcIndex")
+
+# Run gsfPEN
+output <- gsfPEN_R(summary_z = summaryZ, n_vec = Nvec, plinkLD = plinkLD, func_index = funcIndex)
+}

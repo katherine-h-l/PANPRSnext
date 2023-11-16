@@ -59,3 +59,13 @@ gsPEN_R(
 \description{
 Run the gsPEN algorithm for multiple traits, without functional annotations.
 }
+\examples{
+# Load the library and data
+library(PANPRSnext)
+data("summaryZ")
+data("Nvec")
+data("plinkLD")
+
+# Run gsPEN
+output <- gsPEN_R(summary_z = summaryZ, n_vec = Nvec, plinkLD = plinkLD)
+}

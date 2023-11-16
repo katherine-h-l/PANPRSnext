@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "PANPRS_gsfPEN_sparse.hpp"
+#include "PANPRS_gsfPEN_sparse.h"
 
 Rcpp::List gsfPEN_sparse_cpp(
     arma::Mat<double> summary_betas,

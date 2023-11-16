@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "PANPRS_gsPEN.hpp"
+#include "PANPRS_gsPEN.h"
 
 Rcpp::List gsPEN_cpp(
     arma::Mat<double> summary_betas,

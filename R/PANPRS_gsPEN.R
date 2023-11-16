@@ -16,6 +16,15 @@
 #' @param sparse_beta Whether to use the sparse version of the algorithm.
 #' @param debug_output Whether to output the tuning combinations that did not converge.
 #' @importFrom stats median qnorm quantile
+#' @examples
+#' # Load the library and data
+#' library(PANPRSnext)
+#' data("summaryZ")
+#' data("Nvec")
+#' data("plinkLD")
+#'
+#' # Run gsPEN
+#' output <- gsPEN_R(summary_z = summaryZ, n_vec = Nvec, plinkLD = plinkLD)
 #' @export
 gsPEN_R <- function(
     summary_z,
