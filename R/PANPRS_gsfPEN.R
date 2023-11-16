@@ -19,6 +19,11 @@
 #' @param df_max The maximum degrees of freedom for the model.
 #' @param sparse_beta Whether to use the sparse version of the algorithm.
 #' @param debug_output Whether to output the tuning combinations that did not converge.
+#' @param verbose Whether to output information through the evaluation of the algorithm.
+#' @return A named list containing the following elements:
+#' beta_matrix: A matrix of the estimated coefficients for each SNP and trait.
+#' num_iter_vec: A vector of the number of iterations for each tuning combination.
+#' all_tuning_matrix: A matrix of the tuning parameters used for each tuning combination.
 #' @importFrom stats median qnorm quantile
 #' @examples
 #' # Load the library and data
@@ -34,7 +39,12 @@
 #' subset_func_index <- funcIndex[subset, ]
 #'
 #' # Run gsfPEN
-#' output <- gsfPEN_R(summary_z = subset_summary_z, n_vec = Nvec, plinkLD = plinkLD, func_index = subset_func_index)
+#' output <- gsfPEN_R(
+#'   summary_z = subset_summary_z,
+#'   n_vec = Nvec,
+#'   plinkLD = plinkLD,
+#'   func_index = subset_func_index
+#' )
 #' @export
 gsfPEN_R <- function(
     summary_z,
@@ -56,7 +66,8 @@ gsfPEN_R <- function(
     lambda_vec_limit_len = c(1.5, 3),
     df_max = NULL,
     sparse_beta = FALSE,
-    debug_output = FALSE) {
+    debug_output = FALSE,
+    verbose = FALSE) {
   if (z_scale != 1) {
     stop("Tuning values set-up for multiple traits analysis requires z_scale = 1") # nolint: object_usage_linter.
   }
@@ -242,7 +253,9 @@ gsfPEN_R <- function(
     params
   )
 
-  cat("Number of total tuning combinations =", nrow_all_tuning_matrix, "\n")
+  if (verbose) {
+    cat("Number of total tuning combinations =", nrow_all_tuning_matrix, "\n")
+  }
 
   if (sparse_beta) {
     Z <- do.call(
@@ -276,7 +289,9 @@ gsfPEN_R <- function(
   # Remove the tuning combinations that did not converge (correspons to -2 in num_iter_vec)
   if (!debug_output) {
     converge_index <- which(num_iter_vec > 0)
-    cat("Removing (", length(num_iter_vec) - length(converge_index), ") tuning combinations that did not converge\n")
+    if (verbose) {
+      cat("Removing (", length(num_iter_vec) - length(converge_index), ") tuning combinations that did not converge\n")
+    }
     num_iter_vec <- num_iter_vec[converge_index]
     beta_matrix <- beta_matrix[converge_index, ]
     all_tuning_matrix <- all_tuning_matrix[converge_index, ]

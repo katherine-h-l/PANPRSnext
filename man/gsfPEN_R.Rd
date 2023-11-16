@@ -79,6 +79,16 @@ data("Nvec")
 data("plinkLD")
 data("funcIndex")
 
+# Take random subset of the data
+subset <- sample(nrow(summaryZ), 100)
+subset_summary_z <- summaryZ[subset, ]
+subset_func_index <- funcIndex[subset, ]
+
 # Run gsfPEN
-output <- gsfPEN_R(summary_z = summaryZ, n_vec = Nvec, plinkLD = plinkLD, func_index = funcIndex)
+output <- gsfPEN_R(
+  summary_z = subset_summary_z,
+  n_vec = Nvec,
+  plinkLD = plinkLD,
+  func_index = subset_func_index
+)
 }

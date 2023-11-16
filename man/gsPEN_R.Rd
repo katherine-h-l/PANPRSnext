@@ -66,6 +66,14 @@ data("summaryZ")
 data("Nvec")
 data("plinkLD")
 
+# Take random subset of the data
+subset <- sample(nrow(summaryZ), 100)
+subset_summary_z <- summaryZ[subset, ]
+
 # Run gsPEN
-output <- gsPEN_R(summary_z = summaryZ, n_vec = Nvec, plinkLD = plinkLD)
+output <- gsPEN_R(
+  summary_z = subset_summary_z,
+  n_vec = Nvec,
+  plinkLD = plinkLD
+)
 }

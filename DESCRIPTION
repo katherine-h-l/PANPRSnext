@@ -1,10 +1,12 @@
 Package: PANPRSnext
 Type: Package
-Title: Building Polygenic Risk Prediction Models Based on Summary Statistics of Genome-Wide Association Studies
+Title: Building PRS Models Based on Summary Statistics of GWAs
 Version: 1.2.0
-Author: Katherine Luo
-Maintainer: Katherine Luo <hluo224@uwo.ca>
-Description: Shrinkage estimator for polygenic risk prediction models based on summary statistics of genome-wide association studies.
+Authors@R: c(
+    person("Katherine", "Luo", email = "hluo224@uwo.ca", role = c("aut", "cre")),
+    person("Garcia", "Osvaldo", "Espin", email = "oespinga@uwo.ca", role = "aut")
+)
+Description: Shrinkage estimator for polygenic risk prediction models based on summary statistics of genome-wide association studies. Based upon the methods and original PANPRS package as found in: Chen, Chatterjee, Landi, and Shi (2020) <doi:10.1080/01621459.2020.1764849>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

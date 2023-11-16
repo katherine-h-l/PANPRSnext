@@ -1,5 +1,6 @@
-#' Run gsPEN on the provided data set (Only 100 samples)
+#' Run gsPEN on a small sample of the provided data set (Only 100 samples)
 #' @param ... Additional arguments to pass to gsPEN_R
+#' @return The output of gsPEN_R
 #' @importFrom utils data
 #' @export
 test_gsPEN <- function(...) {
@@ -22,8 +23,9 @@ test_gsPEN <- function(...) {
   return(output)
 }
 
-#' Run gsfPEN on the provided data set (Only 100 samples)
+#' Run gsfPEN on a small sample of the provided data set (Only 100 samples)
 #' @param ... Additional arguments to pass to gsfPEN_R
+#' @return The output of gsfPEN_R
 #' @importFrom utils data
 #' @export
 test_gsfPEN <- function(...) {
