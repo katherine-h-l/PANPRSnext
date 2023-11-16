@@ -1,4 +1,4 @@
-#' Run gsPEN on the provided data set
+#' Run gsPEN on the provided data set (Only 100 samples)
 #' @param ... Additional arguments to pass to gsPEN_R
 #' @importFrom utils data
 #' @export
@@ -7,10 +7,12 @@ test_gsPEN <- function(...) {
   data("summaryZ", envir = environment())
   data("Nvec", envir = environment())
   data("plinkLD", envir = environment())
-  data("funcIndex", envir = environment())
+
+  subset <- sample(nrow(summaryZ), 100)
+  subset_summary_z <- summaryZ[subset, ]
 
   output <- gsPEN_R(
-    summary_z = summaryZ, # nolint: object_usage_linter.
+    summary_z = subset_summary_z, # nolint: object_usage_linter.
     n_vec = Nvec, # nolint: object_usage_linter.
     plinkLD = plinkLD, # nolint: object_usage_linter.
     ...
@@ -19,7 +21,7 @@ test_gsPEN <- function(...) {
   return(output)
 }
 
-#' Run gsfPEN on the provided data set
+#' Run gsfPEN on the provided data set (Only 100 samples)
 #' @param ... Additional arguments to pass to gsfPEN_R
 #' @importFrom utils data
 #' @export
@@ -30,11 +32,15 @@ test_gsfPEN <- function(...) {
   data("plinkLD", envir = environment())
   data("funcIndex", envir = environment())
 
+  subset <- sample(nrow(summaryZ), 100)
+  subset_summary_z <- summaryZ[subset, ]
+  subset_func_index <- funcIndex[subset, ]
+
   output <- gsfPEN_R(
-    summary_z = summaryZ, # nolint: object_usage_linter.
+    summary_z = subset_summary_z, # nolint: object_usage_linter.
     n_vec = Nvec, # nolint: object_usage_linter.
     plinkLD = plinkLD, # nolint: object_usage_linter.
-    func_index = funcIndex, # nolint: object_usage_linter.
+    func_index = subset_func_index, # nolint: object_usage_linter.
     ...
   )
 
