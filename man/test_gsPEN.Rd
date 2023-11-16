@@ -2,7 +2,7 @@
 % Please edit documentation in R/debug.R
 \name{test_gsPEN}
 \alias{test_gsPEN}
-\title{Run gsPEN on the provided data set}
+\title{Run gsPEN on the provided data set (Only 100 samples)}
 \usage{
 test_gsPEN(...)
 }
@@ -10,5 +10,5 @@ test_gsPEN(...)
 \item{...}{Additional arguments to pass to gsPEN_R}
 }
 \description{
-Run gsPEN on the provided data set
+Run gsPEN on the provided data set (Only 100 samples)
 }

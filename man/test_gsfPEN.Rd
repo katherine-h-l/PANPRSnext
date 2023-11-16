@@ -2,7 +2,7 @@
 % Please edit documentation in R/debug.R
 \name{test_gsfPEN}
 \alias{test_gsfPEN}
-\title{Run gsfPEN on the provided data set}
+\title{Run gsfPEN on the provided data set (Only 100 samples)}
 \usage{
 test_gsfPEN(...)
 }
@@ -10,5 +10,5 @@ test_gsfPEN(...)
 \item{...}{Additional arguments to pass to gsfPEN_R}
 }
 \description{
-Run gsfPEN on the provided data set
+Run gsfPEN on the provided data set (Only 100 samples)
 }
