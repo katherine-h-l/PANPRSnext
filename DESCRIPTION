@@ -1,8 +1,8 @@
 Package: PANPRSnext
 Type: Package
 Title: Building PRS Models Based on Summary Statistics of GWAs
-Version: 1.2.0
-Authors@R: c(person("Katherine", "Luo", email = "hluo224@uwo.ca", role = c("aut", "cre")), person("Garcia Espin", "Osvaldo", email = "oespinga@uwo.ca", role = c("aut")))
+Version: 1.2.1
+Authors@R: c(person("Katherine", "Luo", email = "hluo224@uwo.ca", role = c("aut", "cre")), person("Osvaldo", "Espin-Garcia", email = "oespinga@uwo.ca", role = c("aut")), person("Ting-Huei", "Chen", email = "ting-huei.chen@mat.ulaval.ca", role = c("aut")))
 Description: Shrinkage estimator for polygenic risk prediction (PRS) models based on summary statistics of genome-wide association (GWA) studies. Based upon the methods and original 'PANPRS' package as found in: Chen, Chatterjee, Landi, and Shi (2020) <doi:10.1080/01621459.2020.1764849>.
 License: GPL-3
 Encoding: UTF-8
@@ -10,7 +10,8 @@ LazyData: true
 RoxygenNote: 7.2.3
 Depends: gtools
 LinkingTo: 
-    Rcpp,
-    RcppArmadillo
+    Rcpp (>= 1.0.14),
+    RcppArmadillo (>= 14.4.3-1) 
 Imports: 
-    Rcpp
+    Rcpp (>= 1.0.14)
+    
